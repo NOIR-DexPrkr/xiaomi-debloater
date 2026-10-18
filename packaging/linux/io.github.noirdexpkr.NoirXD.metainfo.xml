@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.fadeltd.XiaomiDebloater</id>
-  <name>Xiaomi Debloater</name>
+  <id>io.github.noirdexpkr.NoirXD</id>
+  <name>NoirXD</name>
   <summary>Remove MIUI and HyperOS bloatware over ADB, without root</summary>
-  <developer id="io.github.fadeltd">
-    <name>Fadel Trivandi Dipantara</name>
+  <developer id="io.github.noirdexpkr">
+    <name>Dex Parker</name>
   </developer>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-only</project_license>
-  <launchable type="desktop-id">io.github.fadeltd.XiaomiDebloater.desktop</launchable>
+  <launchable type="desktop-id">io.github.noirdexpkr.NoirXD.desktop</launchable>
   <description>
     <p>
-      Xiaomi Debloater removes bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones
+      NoirXD removes bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones
       running MIUI or HyperOS 1, 2 and 3. It works over ADB and needs no root and no bootloader unlock.
     </p>
     <ul>
@@ -20,10 +20,14 @@
       <li>Reversible: apps are uninstalled for the current user only and can be restored</li>
       <li>Built-in guide to debloating safely</li>
     </ul>
+    <p>
+      NoirXD is a fork of the original Xiaomi Debloater project by Fadel Trivandi Dipantara,
+      rebranded with a Spanish interface and the Flat Noir visual identity.
+    </p>
   </description>
-  <url type="homepage">https://fadeltd.github.io/xiaomi-debloater/</url>
-  <url type="bugtracker">https://github.com/fadeltd/xiaomi-debloater/issues</url>
-  <url type="vcs-browser">https://github.com/fadeltd/xiaomi-debloater</url>
+  <url type="homepage">https://github.com/NOIR-DexPrkr/xiaomi-debloater</url>
+  <url type="bugtracker">https://github.com/NOIR-DexPrkr/xiaomi-debloater/issues</url>
+  <url type="vcs-browser">https://github.com/NOIR-DexPrkr/xiaomi-debloater</url>
   <content_rating type="oars-1.1"/>
   <categories>
     <category>Utility</category>

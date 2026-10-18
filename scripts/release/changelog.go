@@ -62,6 +62,7 @@ func ParseUnreleased(changelog string) Unreleased {
 }
 
 // DetermineBump maps Keep a Changelog sections to a semver bump.
+// Section names are accepted in Spanish (the changelog's language) or English.
 //
 // Breaking must be explicit: inferring a major from Removed would let a tidy-up
 // silently become a 2.0, which is exactly the surprise this should avoid.
@@ -72,9 +73,9 @@ func DetermineBump(u Unreleased) Bump {
 	bump := BumpPatch
 	for _, s := range u.Sections {
 		switch strings.ToLower(s) {
-		case "breaking", "breaking changes":
+		case "breaking", "breaking changes", "ruptura", "rupturas", "cambios incompatibles":
 			return BumpMajor
-		case "added":
+		case "added", "añadido", "añadidos", "anadido", "anadidos":
 			bump = BumpMinor
 		}
 	}
@@ -145,7 +146,7 @@ func ApplyRelease(changelog, currentVersion, today string) (*Release, error) {
 		tail = rest[next[0]:]
 	}
 
-	rebuilt := head + "\n\nNothing yet.\n\n" +
+	rebuilt := head + "\n\nNada aún.\n\n" +
 		fmt.Sprintf("## [%s] — %s\n\n", version, today) +
 		u.Body + "\n\n" + tail
 	rebuilt = strings.TrimRight(excessBlankLines.ReplaceAllString(rebuilt, "\n\n\n"), "\n") + "\n"

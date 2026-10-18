@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=NoirXD
+GenericName=Android Debloater
+Comment=Remove MIUI and HyperOS bloatware over ADB, without root
+Exec=noirxd
+Icon=io.github.noirdexpkr.NoirXD
+Terminal=false
+Categories=Utility;
+Keywords=xiaomi;redmi;poco;miui;hyperos;adb;android;bloatware;debloat;noirxd;
+StartupWMClass=noirxd

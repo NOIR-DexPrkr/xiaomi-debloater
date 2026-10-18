@@ -1,39 +1,37 @@
 # .deb and .rpm packages, built by the Publish workflow:
 #   VERSION=1.1.0 ARCH=amd64 nfpm pkg -f packaging/nfpm.yaml -p deb -t dist/
 # ARCH is a Go arch (amd64, arm64); nfpm maps it to each format's own name.
-name: xiaomi-debloater
+name: noirxd
 arch: ${ARCH}
 platform: linux
 version: ${VERSION}
 section: utils
 priority: optional
-maintainer: Fadel Trivandi Dipantara <fadeltd@users.noreply.github.com>
+maintainer: Dex Parker <NOIR-DexPrkr@users.noreply.github.com>
 description: |
-  Remove MIUI and HyperOS bloatware over ADB, without root.
+  NoirXD — remove MIUI and HyperOS bloatware over ADB, without root.
   Desktop app for removing bloatware, ads and telemetry from Xiaomi, Redmi
   and POCO phones, with a risk rating for every package.
-vendor: fadeltd
-homepage: https://fadeltd.github.io/xiaomi-debloater/
+vendor: NOIR-DexPrkr
+homepage: https://github.com/NOIR-DexPrkr/xiaomi-debloater
 license: GPL-3.0-only
 
 contents:
-  - src: build/bin/xiaomi-debloater
-    dst: /usr/bin/xiaomi-debloater
+  - src: build/bin/noirxd
+    dst: /usr/bin/noirxd
     file_info:
       mode: 0755
-  - src: packaging/linux/io.github.fadeltd.XiaomiDebloater.desktop
-    dst: /usr/share/applications/io.github.fadeltd.XiaomiDebloater.desktop
-  - src: packaging/linux/io.github.fadeltd.XiaomiDebloater.metainfo.xml
-    dst: /usr/share/metainfo/io.github.fadeltd.XiaomiDebloater.metainfo.xml
+  - src: packaging/linux/io.github.noirdexpkr.NoirXD.desktop
+    dst: /usr/share/applications/io.github.noirdexpkr.NoirXD.desktop
+  - src: packaging/linux/io.github.noirdexpkr.NoirXD.metainfo.xml
+    dst: /usr/share/metainfo/io.github.noirdexpkr.NoirXD.metainfo.xml
   - src: packaging/linux/icon-512.png
-    dst: /usr/share/icons/hicolor/512x512/apps/io.github.fadeltd.XiaomiDebloater.png
-  - src: build/appicon.svg
-    dst: /usr/share/icons/hicolor/scalable/apps/io.github.fadeltd.XiaomiDebloater.svg
+    dst: /usr/share/icons/hicolor/512x512/apps/io.github.noirdexpkr.NoirXD.png
   - src: LICENSE
-    dst: /usr/share/doc/xiaomi-debloater/copyright
+    dst: /usr/share/doc/noirxd/copyright
     packager: deb
   - src: LICENSE
-    dst: /usr/share/licenses/xiaomi-debloater/LICENSE
+    dst: /usr/share/licenses/noirxd/LICENSE
     packager: rpm
 
 # Built on Ubuntu 22.04 against WebKitGTK 4.1, so it runs on Ubuntu 22.04+,

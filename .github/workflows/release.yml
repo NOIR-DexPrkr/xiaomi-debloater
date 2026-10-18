@@ -54,7 +54,7 @@ jobs:
           set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          files="CHANGELOG.md wails.json packaging/linux/io.github.fadeltd.XiaomiDebloater.metainfo.xml"
+          files="CHANGELOG.md wails.json packaging/linux/io.github.noirdexpkr.NoirXD.metainfo.xml"
 
           # Each push is guarded, so a partially-completed earlier attempt can
           # be resumed rather than blocking every retry.

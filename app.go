@@ -52,7 +52,7 @@ func (a *App) CheckADB() (string, error) {
 	if len(lines) > 0 {
 		return lines[0], nil
 	}
-	return "adb (version unknown)", nil
+	return "adb (versión desconocida)", nil
 }
 
 // GetDevices returns a list of connected ADB devices
@@ -106,13 +106,13 @@ func (a *App) GetDevices() ([]Device, error) {
 // GetPackages lists all packages on the device and enriches them with bloatware data
 func (a *App) GetPackages(serial string) ([]AppPackage, error) {
 	if !isValidSerial(serial) {
-		return nil, fmt.Errorf("invalid device serial")
+		return nil, fmt.Errorf("número de serie del dispositivo no válido")
 	}
 
 	// Get all packages with path info
 	allOut, err := a.run("-s", serial, "shell", "pm", "list", "packages", "-f")
 	if err != nil {
-		return nil, fmt.Errorf("listing packages: %w", err)
+		return nil, fmt.Errorf("al listar los paquetes: %w", err)
 	}
 
 	// Get disabled packages
@@ -191,7 +191,7 @@ func (a *App) GetPackages(serial string) ([]AppPackage, error) {
 // GetDeviceInfo returns detailed device information (model, MIUI version, Android version, etc.)
 func (a *App) GetDeviceInfo(serial string) (map[string]string, error) {
 	if !isValidSerial(serial) {
-		return nil, fmt.Errorf("invalid device serial")
+		return nil, fmt.Errorf("número de serie del dispositivo no válido")
 	}
 
 	props := map[string]string{}
@@ -223,7 +223,7 @@ func (a *App) UninstallPackage(serial, packageName string) ActionResult {
 	if !isValidSerial(serial) || !isValidPackageName(packageName) {
 		return ActionResult{
 			Success: false,
-			Message: "Invalid serial or package name",
+			Message: "Número de serie o nombre de paquete no válido",
 			Package: packageName,
 		}
 	}
@@ -232,14 +232,14 @@ func (a *App) UninstallPackage(serial, packageName string) ActionResult {
 	if err != nil {
 		return ActionResult{
 			Success: false,
-			Message: fmt.Sprintf("Uninstall failed: %v", err),
+			Message: fmt.Sprintf("La desinstalación falló: %v", err),
 			Package: packageName,
 		}
 	}
 
 	return ActionResult{
 		Success: true,
-		Message: "Uninstalled successfully",
+		Message: "Desinstalado correctamente",
 		Package: packageName,
 	}
 }
@@ -249,7 +249,7 @@ func (a *App) DisablePackage(serial, packageName string) ActionResult {
 	if !isValidSerial(serial) || !isValidPackageName(packageName) {
 		return ActionResult{
 			Success: false,
-			Message: "Invalid serial or package name",
+			Message: "Número de serie o nombre de paquete no válido",
 			Package: packageName,
 		}
 	}
@@ -265,7 +265,7 @@ func (a *App) DisablePackage(serial, packageName string) ActionResult {
 
 	return ActionResult{
 		Success: true,
-		Message: "Disabled successfully",
+		Message: "Deshabilitado correctamente",
 		Package: packageName,
 	}
 }
@@ -275,7 +275,7 @@ func (a *App) EnablePackage(serial, packageName string) ActionResult {
 	if !isValidSerial(serial) || !isValidPackageName(packageName) {
 		return ActionResult{
 			Success: false,
-			Message: "Invalid serial or package name",
+			Message: "Número de serie o nombre de paquete no válido",
 			Package: packageName,
 		}
 	}
@@ -284,14 +284,14 @@ func (a *App) EnablePackage(serial, packageName string) ActionResult {
 	if err != nil {
 		return ActionResult{
 			Success: false,
-			Message: fmt.Sprintf("Enable failed: %v", err),
+			Message: fmt.Sprintf("La habilitación falló: %v", err),
 			Package: packageName,
 		}
 	}
 
 	return ActionResult{
 		Success: true,
-		Message: "Enabled successfully",
+		Message: "Habilitado correctamente",
 		Package: packageName,
 	}
 }
@@ -301,7 +301,7 @@ func (a *App) ReinstallPackage(serial, packageName string) ActionResult {
 	if !isValidSerial(serial) || !isValidPackageName(packageName) {
 		return ActionResult{
 			Success: false,
-			Message: "Invalid serial or package name",
+			Message: "Número de serie o nombre de paquete no válido",
 			Package: packageName,
 		}
 	}
@@ -310,14 +310,14 @@ func (a *App) ReinstallPackage(serial, packageName string) ActionResult {
 	if err != nil {
 		return ActionResult{
 			Success: false,
-			Message: fmt.Sprintf("Reinstall failed: %v", err),
+			Message: fmt.Sprintf("La restauración falló: %v", err),
 			Package: packageName,
 		}
 	}
 
 	return ActionResult{
 		Success: true,
-		Message: "Reinstalled successfully",
+		Message: "Restaurado correctamente",
 		Package: packageName,
 	}
 }
@@ -327,9 +327,9 @@ func (a *App) ReinstallPackage(serial, packageName string) ActionResult {
 // disableFailedMessage explains the common HyperOS refusal to freeze system apps
 func disableFailedMessage(err error) string {
 	if strings.Contains(err.Error(), "SecurityException") {
-		return fmt.Sprintf("Disable failed: this OS blocks disabling system apps, use Uninstall instead (%v)", err)
+		return fmt.Sprintf("La deshabilitación falló: este sistema bloquea la deshabilitación de apps del sistema; usa Desinstalar en su lugar (%v)", err)
 	}
-	return fmt.Sprintf("Disable failed: %v", err)
+	return fmt.Sprintf("La deshabilitación falló: %v", err)
 }
 
 // parsePackageList parses pm list output into a set of package names

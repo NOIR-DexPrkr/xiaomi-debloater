@@ -21,7 +21,7 @@ import (
 const (
 	changelogPath = "CHANGELOG.md"
 	wailsPath     = "wails.json"
-	metainfoPath  = "packaging/linux/io.github.fadeltd.XiaomiDebloater.metainfo.xml"
+	metainfoPath  = "packaging/linux/io.github.noirdexpkr.NoirXD.metainfo.xml"
 )
 
 func main() {

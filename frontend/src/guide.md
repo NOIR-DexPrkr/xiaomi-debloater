@@ -1,72 +1,72 @@
-# Xiaomi / HyperOS Debloat Guide
+# Guía de debloat para Xiaomi / HyperOS
 
-## Before you start
+## Antes de empezar
 
-- **Turn on Developer options.** Go to Settings > About phone and tap *MIUI version* (on HyperOS it's called *OS version*) about 7 times, until the phone says you are a developer. [2][5][8]
-- **Turn on USB debugging.** Go to Settings > Additional settings > Developer options and switch on *USB debugging*. Also switch on *USB debugging (Security settings)*, which needs you to be signed in to a Mi Account. When you first connect the phone, tap Allow on the RSA prompt. [2][5]
-- **Back up first.** The Reddit guide suggests a local backup at Settings > About phone > Back up and restore > Mobile device, then copying the `MIUI/backup/AllBackup` folder to your PC along with DCIM, Downloads and Documents. [1] A bad removal can bootloop the phone, and the only fix may be a factory reset that wipes your data. [2]
-- **Uninstall vs disable:**
-  - `pm uninstall -k --user 0 <pkg>` removes the app for your user only. The APK stays on the system partition and `-k` keeps its data, so you can undo it. [8]
-  - `pm disable-user --user 0 <pkg>` freezes the app and leaves it installed. [8] On newer HyperOS (Android 14+), Xiaomi blocks freezing system apps with a `SecurityException`, so ovsky's tool uses uninstall-for-user-0 instead. [5]
-- **Undo:** `adb shell cmd package install-existing <pkg>` brings a removed package back. [3] `pm install-existing --user 0 <pkg>` does the same thing. [8]
-- **Reboot after each batch.** If the phone restarts normally, you probably haven't broken anything core. [3]
-- **Research anything you're unsure about.** Remove packages one at a time and check what each one does first. [6]
+- **Activa las opciones de desarrollador.** Ve a Ajustes > Acerca del teléfono y toca *Versión de MIUI* (en HyperOS se llama *Versión del OS*) unas 7 veces, hasta que el teléfono diga que ya eres desarrollador. [2][5][8]
+- **Activa la depuración por USB.** Ve a Ajustes > Ajustes adicionales > Opciones de desarrollador y activa *Depuración por USB*. Activa también *Depuración por USB (ajustes de seguridad)*, que requiere iniciar sesión con una cuenta Mi. Cuando conectes el teléfono por primera vez, toca Permitir en el aviso RSA. [2][5]
+- **Haz una copia de seguridad antes.** La guía de Reddit sugiere una copia local en Ajustes > Acerca del teléfono > Copia de seguridad y restauración > Dispositivo móvil, y luego copiar la carpeta `MIUI/backup/AllBackup` a tu PC junto con DCIM, Downloads y Documents. [1] Una eliminación mala puede dejar el teléfono en bucle de arranque, y la única solución puede ser un restablecimiento de fábrica que borra tus datos. [2]
+- **Desinstalar frente a deshabilitar:**
+  - `pm uninstall -k --user 0 <pkg>` elimina la app solo para tu usuario. El APK permanece en la partición del sistema y `-k` conserva sus datos, así que puedes deshacerlo. [8]
+  - `pm disable-user --user 0 <pkg>` congela la app y la deja instalada. [8] En HyperOS reciente (Android 14+), Xiaomi bloquea la congelación de apps del sistema con una `SecurityException`, así que la herramienta de ovsky usa la desinstalación para el usuario 0 en su lugar. [5]
+- **Deshacer:** `adb shell cmd package install-existing <pkg>` devuelve un paquete eliminado. [3] `pm install-existing --user 0 <pkg>` hace lo mismo. [8]
+- **Reinicia después de cada lote.** Si el teléfono arranca con normalidad, probablemente no rompiste nada esencial. [3]
+- **Investiga lo que no tengas claro.** Elimina los paquetes de uno en uno y averigua primero qué hace cada uno. [6]
 
-## Recommended order
+## Orden recomendado
 
-1. **Ads and telemetry first.** Examples: `com.miui.msa.global`, `com.miui.analytics`, `com.miui.systemAdSolution`, `com.miui.daemon`, `com.xiaomi.security.onetrack`, and the Facebook stubs (`com.facebook.appmanager/services/system`). ovsky's "Phase 1" and every list agree on these. [5][6][8]
-2. **Third-party preloads next.** Games, shopping apps, Netflix/Spotify stubs and carrier apps (Orange, Vodafone, Telekom, O2). These are all rated Recommended in UAD-ng. [4][7]
-3. **Optional Xiaomi apps last, and only if you've installed replacements.** Examples: Gallery, Weather, Notes, Music, Calendar, File Manager, Browser. ovsky calls this phase "Caution". [5]
-4. Treat ovsky's "Risky" group (Security Center, Find Device, GetApps, Mi Account, Themes, Mi Cloud) and UAD-ng's Expert/Unsafe entries as keep-unless-you're-sure. ovsky skips the risky phase by default. [4][5]
+1. **Primero anuncios y telemetría.** Ejemplos: `com.miui.msa.global`, `com.miui.analytics`, `com.miui.systemAdSolution`, `com.miui.daemon`, `com.xiaomi.security.onetrack`, y los stubs de Facebook (`com.facebook.appmanager/services/system`). La "fase 1" de ovsky y todas las listas coinciden en estos. [5][6][8]
+2. **Después las precargas de terceros.** Juegos, apps de compras, stubs de Netflix/Spotify y apps de operadores (Orange, Vodafone, Telekom, O2). Todos estos están marcados como Recomendados en UAD-ng. [4][7]
+3. **Al final las apps opcionales de Xiaomi, y solo si ya instalaste reemplazos.** Ejemplos: Galería, Clima, Notas, Música, Calendario, Administrador de archivos, Navegador. ovsky llama a esta fase "Caution" (precaución). [5]
+4. Trata el grupo "Risky" de ovsky (Security Center, Find Device, GetApps, Mi Account, Themes, Mi Cloud) y las entradas Expert/Unsafe de UAD-ng como "no quitar a menos que estés seguro". ovsky omite la fase de riesgo por defecto. [4][5]
 
-mpierson offers the same idea as three profiles (safe, balanced, aggressive), and the aggressive one is the most likely to break features. [8]
+mpierson ofrece la misma idea como tres perfiles (seguro, equilibrado, agresivo), y el agresivo es el más probable que rompa funciones. [8]
 
-## Privacy settings that don't need ADB
+## Ajustes de privacidad que no necesitan ADB
 
-All of the following come from the Reddit guide: [1]
-- **Private DNS:** Settings > Connection & sharing > Private DNS > `dns.adguard-dns.com` blocks ads across the whole system.
-- **Revoke system permissions:** Settings > Passwords & security > Authorization & revocation. Turn off *msa*, *MIUI Daemon*, *Feedback* and *System apps updater*; the last one stops silent installs such as Game Center. Also turn off *Calendar* to stop promo events. You may need to tap Revoke more than once.
-- **Ads:** Settings > Passwords & security > Privacy > Ad services. Turn off *Personalized ad recommendations* and the *User Experience Program*.
-- **GetApps:** setting the phone region to United States hides GetApps.
-- **Scanning:** Settings > Location > Location services. Turn off Wi-Fi and Bluetooth scanning.
-- **Lock screen feed:** Turn off *Glance for Mi* (Wallpaper Carousel) under Always-on display & Lock screen.
-- **Offline apps:** Security app > Data usage > Restrict data usage. Block network access for apps that don't need it.
+Todo lo siguiente proviene de la guía de Reddit: [1]
+- **DNS privado:** Ajustes > Conexión y uso compartido > DNS privado > `dns.adguard-dns.com` bloquea anuncios en todo el sistema.
+- **Revocar permisos del sistema:** Ajustes > Contraseñas y seguridad > Autorización y revocación. Desactiva *msa*, *MIUI Daemon*, *Feedback* y *System apps updater*; este último detiene instalaciones silenciosas como Game Center. Desactiva también *Calendar* para evitar eventos promocionales. Es posible que tengas que tocar Revocar más de una vez.
+- **Anuncios:** Ajustes > Contraseñas y seguridad > Privacidad > Servicios de anuncios. Desactiva *Recomendaciones de anuncios personalizados* y el *Programa de experiencia de usuario*.
+- **GetApps:** cambiar la región del teléfono a Estados Unidos oculta GetApps.
+- **Escaneo:** Ajustes > Ubicación > Servicios de ubicación. Desactiva el escaneo de Wi-Fi y Bluetooth.
+- **Pantalla de bloqueo:** Desactiva *Glance for Mi* (Wallpaper Carousel) en Pantalla siempre activa y pantalla de bloqueo.
+- **Apps sin conexión:** app Security > Uso de datos > Restringir uso de datos. Bloquea el acceso a la red de las apps que no lo necesiten.
 
-Some Xiaomi apps (Security, Downloads, Files, Themes, Music, GetApps) may have their own "recommendations" switch. None of the sources document these switches, so check each app's settings yourself.
+Algunas apps de Xiaomi (Security, Downloads, Files, Themes, Music, GetApps) pueden tener su propio interruptor de "recomendaciones". Ninguna de las fuentes documenta estos interruptores, así que revisa los ajustes de cada app por tu cuenta.
 
-## Never remove
+## Nunca elimines
 
-| Package | Why |
+| Paquete | Por qué |
 |---|---|
-| `com.miui.securitycenter`, `com.miui.securitycore`, `com.miui.securityadd` | Security stack. UAD-ng reports bootloops, especially before MIUI 13. [4] |
-| `com.android.updater` | System updates. Can bootloop older MIUI. [4] |
-| `com.miui.home` (or your POCO launcher) | Without it you lose gestures and recents, even with another launcher. [4] |
-| `com.lbe.security.miui`, `com.miui.permission` | Permission manager. ovsky keeps these restore-only. [4][5] |
-| `com.miui.rom`, `com.miui.system`, `com.miui.core`, `android.miui.overlay` | Core MIUI framework. [4] |
-| `com.miui.global.packageinstaller`, `com.miui.packageinstaller`, `com.android.packageinstaller` | Needed to install apps. Removal bootloops Xiaomi.eu and China ROMs. [4] |
-| `com.xiaomi.finddevice`, `com.xiaomi.account` | Sign out of your Mi Account first, or you can get locked out. Removing Find Device also breaks factory reset from Settings. [4] |
-| `com.xiaomi.micloud.sdk` | Makes the phone reboot on its own. [4] |
-| `com.android.overlay.circletosearch` | Soft brick on HyperOS 2. [4] |
-| `com.android.htmlviewer`, `com.google.android.ext.shared` | Bootloops reported on MIUI 12.5–14. [4] |
-| `com.miui.systemui.carriers.overlay`, `com.android.phone`, `com.android.providers.telephony` | Calls, SIM and LTE. [4] |
-| `com.miui.miwallpaper` | Leaves a black lock screen and breaks "Set as wallpaper". [8] |
-| `com.android.vpndialogs` | Keep it if you use any VPN app. [3] |
+| `com.miui.securitycenter`, `com.miui.securitycore`, `com.miui.securityadd` | Pila de seguridad. UAD-ng reporta bucles de arranque, especialmente antes de MIUI 13. [4] |
+| `com.android.updater` | Actualizaciones del sistema. Puede dejar en bucle de arranque MIUI antiguos. [4] |
+| `com.miui.home` (o tu launcher de POCO) | Sin él pierdes los gestos y las apps recientes, incluso con otro launcher. [4] |
+| `com.lbe.security.miui`, `com.miui.permission` | Administrador de permisos. ovsky los conserva solo para restaurar. [4][5] |
+| `com.miui.rom`, `com.miui.system`, `com.miui.core`, `android.miui.overlay` | Framework central de MIUI. [4] |
+| `com.miui.global.packageinstaller`, `com.miui.packageinstaller`, `com.android.packageinstaller` | Necesarios para instalar apps. Eliminarlos deja en bucle de arranque Xiaomi.eu y las ROM de China. [4] |
+| `com.xiaomi.finddevice`, `com.xiaomi.account` | Cierra tu cuenta Mi primero, o podrías quedar bloqueado. Eliminar Find Device también rompe el restablecimiento de fábrica desde Ajustes. [4] |
+| `com.xiaomi.micloud.sdk` | Hace que el teléfono se reinicie solo. [4] |
+| `com.android.overlay.circletosearch` | Deja el teléfono inutilizable (soft brick) en HyperOS 2. [4] |
+| `com.android.htmlviewer`, `com.google.android.ext.shared` | Se reportaron bucles de arranque en MIUI 12.5–14. [4] |
+| `com.miui.systemui.carriers.overlay`, `com.android.phone`, `com.android.providers.telephony` | Llamadas, SIM y LTE. [4] |
+| `com.miui.miwallpaper` | Deja la pantalla de bloqueo en negro y rompe "Establecer como fondo de pantalla". [8] |
+| `com.android.vpndialogs` | Consérvalo si usas alguna app VPN. [3] |
 
-## HyperOS notes
+## Notas de HyperOS
 
-- Some packages have different names on HyperOS. ovsky lists `com.miui.findmy` (HyperOS) alongside `com.xiaomi.finddevice`, `com.xiaomi.scanner` alongside `com.miui.scanner`, `com.xiaomi.market`/`com.xiaomi.mipicks` for GetApps, and three names for Themes. [5]
-- These packages only appear on HyperOS: `com.xiaomi.hypercomm` (interconnect) and `com.xiaomi.aicr` (AI engine). [5] On HyperOS 3, the Camera Ring feature depends on `com.android.inputsettings.overlay.miui`. [4] Removing `miui.systemui.plugin` replaces the HyperOS control center and volume UI with the stock Android versions. [4]
-- China and Global/EEA ROMs ship different packages. On EU ROMs the default dialer is Google's. On a HyperOS 2 EU 15 Ultra, removing `com.miui.audiomonitor`, `com.android.calllogbackup`, the MIUI SystemUI/Settings overlays or the permission-controller overlay broke the call-record button. [3]
-- **Joyose** (`com.xiaomi.joyose`): the sources disagree. Some XDA users say it throttles games, while others keep it for thermal control. ovsky asks you before removing it. [3][5]
-- **Bootloader unlock:** an XDA contributor advises global-device owners who plan to unlock the bootloader not to use the aggressive 15 Ultra list. [3]
+- Algunos paquetes tienen nombres distintos en HyperOS. ovsky lista `com.miui.findmy` (HyperOS) junto a `com.xiaomi.finddevice`, `com.xiaomi.scanner` junto a `com.miui.scanner`, `com.xiaomi.market`/`com.xiaomi.mipicks` para GetApps, y tres nombres para Themes. [5]
+- Estos paquetes solo aparecen en HyperOS: `com.xiaomi.hypercomm` (interconexión) y `com.xiaomi.aicr` (motor de IA). [5] En HyperOS 3, la función Camera Ring depende de `com.android.inputsettings.overlay.miui`. [4] Eliminar `miui.systemui.plugin` reemplaza el centro de control y la interfaz de volumen de HyperOS por las versiones de Android estándar. [4]
+- Las ROM de China y las globales/EEA incluyen paquetes distintos. En las ROM de EU el marcador predeterminado es el de Google. En un HyperOS 2 EU 15 Ultra, eliminar `com.miui.audiomonitor`, `com.android.calllogbackup`, los overlays de SystemUI/Ajustes de MIUI o el overlay del controlador de permisos hizo dejar de funcionar el botón de grabación de llamadas. [3]
+- **Joyose** (`com.xiaomi.joyose`): las fuentes discrepan. Algunos usuarios de XDA dicen que limita el rendimiento en juegos, mientras que otros lo conservan para el control térmico. ovsky te pregunta antes de eliminarlo. [3][5]
+- **Desbloqueo del bootloader:** un colaborador de XDA aconseja a los dueños de dispositivos globales que planean desbloquear el bootloader no usar la lista agresiva del 15 Ultra. [3]
 
-## After OTA updates
+## Después de las actualizaciones OTA
 
-- An uninstall for user 0 doesn't stop OTA updates. [9] mpierson says OTA can break if you remove `com.xiaomi.xmsf`, `xmsfkeeper`, `com.miui.cloudservice(.sysbase)`, `com.xiaomi.micloud.sdk`, `com.miui.daemon` or `com.xiaomi.simactivate.service`. Reinstall them and reboot if updates stop. [8]
-- Major updates add new bloat. The XDA list was revised for HyperOS 3 for this reason. [3] Some packages come back too: `com.xiaomi.ugd` reappeared on HyperOS. [4]
-- After every system update, open this app, press **Update list**, and check the Bloatware tab for anything new.
+- Una desinstalación para el usuario 0 no detiene las actualizaciones OTA. [9] mpierson dice que la OTA puede fallar si eliminas `com.xiaomi.xmsf`, `xmsfkeeper`, `com.miui.cloudservice(.sysbase)`, `com.xiaomi.micloud.sdk`, `com.miui.daemon` o `com.xiaomi.simactivate.service`. Restaura esos paquetes y reinicia si las actualizaciones se detienen. [8]
+- Las actualizaciones importantes añaden bloat nuevo. La lista de XDA se revisó para HyperOS 3 por esta razón. [3] Algunos paquetes también reaparecen: `com.xiaomi.ugd` reapareció en HyperOS. [4]
+- Después de cada actualización del sistema, abre esta app, pulsa **Actualizar lista** y revisa la pestaña Bloatware por si hay algo nuevo.
 
-## Sources
+## Fuentes
 
 1. Reddit r/miui, "The Ultimate MIUI Debloat & Privacy Guide (No Root)": https://www.reddit.com/r/miui/comments/1sd50rf/the_ultimate_miui_debloat_privacy_guide_no_root/ (read via web.archive.org)
 2. kirthandev/MIUI-Debloater-official: https://github.com/kirthandev/MIUI-Debloater-official

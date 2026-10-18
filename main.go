@@ -18,7 +18,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "Xiaomi Debloater",
+		Title:  "NoirXD",
 		Width:  1200,
 		Height: 800,
 		AssetServer: &assetserver.Options{
@@ -32,8 +32,8 @@ func main() {
 		Mac: &mac.Options{
 			TitleBar: mac.TitleBarHiddenInset(),
 			About: &mac.AboutInfo{
-				Title:   "Xiaomi Debloater",
-				Message: "Safely debloat your Xiaomi/Redmi MIUI device",
+				Title:   "NoirXD",
+				Message: "Noir - Xiaomi Debloater. Basado en el proyecto original de Fadel Trivandi Dipantara. Elimina el bloatware de tu dispositivo Xiaomi/Redmi MIUI de forma segura",
 			},
 		},
 	})

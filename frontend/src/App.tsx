@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
-import { GetDevices, GetPackages, GetDeviceInfo } from '../wailsjs/go/main/App.js'
+import { useState, useEffect, type CSSProperties } from 'react'
+import { GetDevices, GetPackages, GetDeviceInfo, CheckADB, GetListInfo, UpdateList } from '../wailsjs/go/main/App.js'
+import { Environment } from '../wailsjs/runtime/runtime.js'
 import { main } from '../wailsjs/go/models.js'
 
 type Device = main.Device
@@ -11,12 +12,16 @@ interface LogEntry {
   Message: string
   Success: boolean
 }
-import StatusBar from './components/StatusBar'
+import Sidebar from './components/Sidebar'
+import Settings from './components/Settings'
 import DeviceHeader from './components/DeviceHeader'
 import FilterBar from './components/FilterBar'
 import PackageList from './components/PackageList'
 import LogPanel from './components/LogPanel'
 import Guide from './components/Guide'
+import Home from './components/Home'
+
+type AppView = 'home' | 'debloat' | 'guide' | 'settings'
 
 function App() {
   const [devices, setDevices] = useState<Device[]>([])
@@ -27,7 +32,20 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
-  const [view, setView] = useState<'packages' | 'guide'>('packages')
+  const [view, setView] = useState<AppView>('home')
+  const [isMac, setIsMac] = useState(false)
+  // Operation log: hidden by default, auto-opens on the first action
+  const [logOpen, setLogOpen] = useState(false)
+  // ADB status, shared by the sidebar footer and the settings view
+  const [adbState, setAdbState] = useState<'checking' | 'installed' | 'missing'>('checking')
+  const [adbVersion, setAdbVersion] = useState('')
+  // Package list info (Settings)
+  const [listInfo, setListInfo] = useState<main.ListInfo | null>(null)
+  const [listStatus, setListStatus] = useState('')
+  // Advanced users can reveal risk=danger packages; everyone else never sees them
+  const [showDanger, setShowDanger] = useState(
+    () => localStorage.getItem('xiaomi-debloater.show-danger') === 'true'
+  )
   // Bumped when a newer package list is downloaded so packages get re-classified
   const [listRevision, setListRevision] = useState(0)
 
@@ -44,7 +62,7 @@ function App() {
         return ready ? ready.serial : ''
       })
     } catch (err) {
-      addLog('', `Failed to get devices: ${err}`, false)
+      addLog('', `No se pudieron obtener los dispositivos: ${err}`, false)
     }
   }
 
@@ -56,9 +74,9 @@ function App() {
     try {
       const pkgs = (await GetPackages(selectedSerial)) ?? []
       setPackages(pkgs)
-      addLog('', 'Packages refreshed', true)
+      addLog('', 'Paquetes actualizados', true)
     } catch (err) {
-      addLog('', `Failed to get packages: ${err}`, false)
+      addLog('', `No se pudieron obtener los paquetes: ${err}`, false)
     } finally {
       setLoading(false)
     }
@@ -72,7 +90,7 @@ function App() {
       const info = await GetDeviceInfo(selectedSerial)
       setDeviceInfo(info)
     } catch (err) {
-      addLog('', `Failed to get device info: ${err}`, false)
+      addLog('', `No se pudo obtener la información del dispositivo: ${err}`, false)
     }
   }
 
@@ -92,11 +110,51 @@ function App() {
     setLogEntries([])
   }
 
+  const checkAdb = async () => {
+    setAdbState('checking')
+    try {
+      const version = await CheckADB()
+      setAdbVersion(version.split('\n')[0])
+      setAdbState('installed')
+    } catch {
+      setAdbVersion('')
+      setAdbState('missing')
+    }
+  }
+
+  // Pull the latest package list (and its status for Settings) at startup
+  const updateList = async () => {
+    setListStatus('Comprobando…')
+    try {
+      const before = (listInfo ?? (await GetListInfo())).version
+      const info = await UpdateList()
+      setListInfo(info)
+      if (info.version !== before) {
+        setListStatus('Actualizada')
+        setListRevision((r) => r + 1)
+      } else {
+        setListStatus('Ya está al día')
+      }
+    } catch (err) {
+      setListStatus('Error al actualizar')
+      console.error(err)
+    }
+  }
+
   // Initial device detection
   useEffect(() => {
     refreshDevices()
     const interval = setInterval(refreshDevices, 3000)
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    checkAdb()
+    GetListInfo().then(setListInfo)
+    updateList()
+    Environment()
+      .then((env) => setIsMac(env.platform === 'darwin'))
+      .catch(() => setIsMac(false))
   }, [])
 
   // Load packages and device info when device changes
@@ -110,76 +168,117 @@ function App() {
     }
   }, [selectedSerial, listRevision])
 
-  return (
-    <div className="dark bg-gray-900 text-gray-100 h-screen flex flex-col">
-      {/* Status Bar */}
-      <StatusBar devices={devices} onListUpdated={() => setListRevision((r) => r + 1)} />
+  const connectedCount = devices.filter((d) => d.state === 'device').length
 
-      {/* View Tabs */}
-      <div className="flex gap-1 border-b border-gray-700 px-4 pt-2">
-        {(['packages', 'guide'] as const).map((v) => (
-          <button
-            key={v}
-            onClick={() => setView(v)}
-            className={`px-4 py-2 text-sm font-medium rounded-t border-b-2 -mb-px ${
-              view === v
-                ? 'border-blue-500 text-white'
-                : 'border-transparent text-gray-400 hover:text-gray-200'
-            }`}
-          >
-            {v === 'packages' ? 'Packages' : 'Guide'}
-          </button>
-        ))}
+  // The log opens itself the first time an action runs
+  const handleActionStart = () => setLogOpen(true)
+
+  if (view === 'home') {
+    return (
+      <div className="dark bg-noir text-noir-text h-screen flex flex-col">
+        {/* Home navbar: brand + window drag handle */}
+        <div
+          className={`flex items-center border-b border-noir-border bg-noir px-4 ${isMac ? 'h-13 pl-24' : 'h-12'}`}
+          style={{ '--wails-draggable': 'drag' } as CSSProperties}
+        >
+          <span className="flex items-center gap-2 select-none">
+            <span className="font-display font-black text-sm tracking-[-0.03em] uppercase">
+              NOIR<span className="text-noir-cyan">XD</span>
+            </span>
+            <span className="text-noir-muted text-xs">Noir - Xiaomi Debloater</span>
+          </span>
+        </div>
+        <Home onStart={() => setView('debloat')} onGuide={() => setView('guide')} />
       </div>
+    )
+  }
 
-      {view === 'guide' ? (
-        <div className="flex-1 overflow-y-auto">
-          <Guide />
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Header */}
-          <div className="border-b border-gray-700 p-4">
-            <DeviceHeader
-              devices={devices}
-              selectedSerial={selectedSerial}
-              onSelectDevice={setSelectedSerial}
-              deviceInfo={deviceInfo}
-              onRefresh={() => {
-                refreshDevices()
-                refreshPackages()
-              }}
-              isLoading={loading}
+  return (
+    <div className="dark bg-noir text-noir-text h-screen flex overflow-hidden">
+      {/* Sidebar navigation */}
+      <Sidebar
+        view={view}
+        onNavigate={setView}
+        isMac={isMac}
+        devicesConnected={connectedCount}
+        adbOk={adbState === 'installed'}
+      />
+
+      {/* Main area */}
+      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
+        {view === 'debloat' ? (
+          <>
+            {/* Header */}
+            <div className="border-b border-noir-border p-4">
+              <DeviceHeader
+                devices={devices}
+                selectedSerial={selectedSerial}
+                onSelectDevice={setSelectedSerial}
+                deviceInfo={deviceInfo}
+                onRefresh={() => {
+                  refreshDevices()
+                  refreshPackages()
+                }}
+                isLoading={loading}
+              />
+            </div>
+
+            {/* Filter Bar */}
+            <div className="border-b border-noir-border p-3">
+              <FilterBar
+                searchText={searchText}
+                activeCategory={activeCategory}
+                onSearchChange={setSearchText}
+                onCategoryChange={setActiveCategory}
+              />
+            </div>
+
+            {/* Package List */}
+            <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+              <PackageList
+                packages={packages}
+                searchText={searchText}
+                activeCategory={activeCategory}
+                selectedSerial={selectedSerial}
+                showDanger={showDanger}
+                onAddLog={addLog}
+                onRefresh={refreshPackages}
+                onActionStart={handleActionStart}
+                isLoading={loading}
+              />
+            </div>
+
+            {/* Operation log: only here, collapsed by default */}
+            <LogPanel
+              entries={logEntries}
+              onClear={clearLog}
+              open={logOpen}
+              onToggle={() => setLogOpen((o) => !o)}
             />
+          </>
+        ) : view === 'guide' ? (
+          <div className="flex-1 overflow-y-auto">
+            <Guide />
           </div>
-
-          {/* Filter Bar */}
-          <div className="border-b border-gray-700 p-3">
-            <FilterBar
-              searchText={searchText}
-              activeCategory={activeCategory}
-              onSearchChange={setSearchText}
-              onCategoryChange={setActiveCategory}
-            />
-          </div>
-
-          {/* Package List */}
-          <div className="flex-1 overflow-hidden">
-            <PackageList
-              packages={packages}
-              searchText={searchText}
-              activeCategory={activeCategory}
-              selectedSerial={selectedSerial}
-              onAddLog={addLog}
-              onRefresh={refreshPackages}
-              isLoading={loading}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Log Panel */}
-      <LogPanel entries={logEntries} onClear={clearLog} />
+        ) : (
+          <Settings
+            adbState={adbState}
+            adbVersion={adbVersion}
+            onRecheckAdb={checkAdb}
+            listInfo={listInfo}
+            listStatus={listStatus}
+            onUpdateList={updateList}
+            showDanger={showDanger}
+            onToggleDanger={() =>
+              setShowDanger((prev) => {
+                localStorage.setItem('xiaomi-debloater.show-danger', String(!prev))
+                return !prev
+              })
+            }
+            devices={devices}
+          />
+        )}
+      </main>
     </div>
   )
 }
