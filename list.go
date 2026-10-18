@@ -14,7 +14,8 @@ import (
 
 // remoteListURL is where the maintained package list is published; the app pulls it
 // so users get updates for new MIUI/HyperOS releases without a new app build.
-const remoteListURL = "https://raw.githubusercontent.com/fadeltd/xiaomi-debloater/main/bloatware.json"
+// remoteListURL is the fork's package list; override with NOIRXD_LIST_URL
+const remoteListURL = "https://raw.githubusercontent.com/NOIR-DexPrkr/xiaomi-debloater/main/bloatware.json"
 
 // maxListSize caps the downloaded list so a bad response cannot exhaust memory
 const maxListSize = 5 << 20
@@ -43,7 +44,7 @@ type ListInfo struct {
 	Version string `json:"version"`
 	Updated string `json:"updated"`
 	Count   int    `json:"count"`
-	Source  string `json:"source"` // "built-in", "cached", "downloaded"
+	Source  string `json:"source"` // "integrada", "caché", "descargada"
 }
 
 var (
@@ -56,10 +57,10 @@ var (
 func parseList(data []byte) (*BloatList, error) {
 	var list BloatList
 	if err := json.Unmarshal(data, &list); err != nil {
-		return nil, fmt.Errorf("parsing package list: %w", err)
+		return nil, fmt.Errorf("al analizar la lista de paquetes: %w", err)
 	}
 	if list.Version == "" || len(list.Packages) == 0 {
-		return nil, fmt.Errorf("package list is missing a version or packages")
+		return nil, fmt.Errorf("la lista de paquetes no tiene versión o paquetes")
 	}
 	return &list, nil
 }
@@ -94,16 +95,16 @@ func cachePath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(dir, "xiaomi-debloater", "bloatware.json"), nil
+	return filepath.Join(dir, "noirxd", "bloatware.json"), nil
 }
 
 // loadLists activates the built-in list, then a cached download if it is newer
 func loadLists() {
 	builtIn, err := parseList(embeddedList)
 	if err != nil {
-		panic(fmt.Sprintf("built-in package list is invalid: %v", err))
+		panic(fmt.Sprintf("la lista de paquetes integrada no es válida: %v", err))
 	}
-	applyList(builtIn, "built-in")
+	applyList(builtIn, "integrada")
 
 	path, err := cachePath()
 	if err != nil {
@@ -114,7 +115,7 @@ func loadLists() {
 		return
 	}
 	if cached, err := parseList(data); err == nil && cached.Version > builtIn.Version {
-		applyList(cached, "cached")
+		applyList(cached, "caché")
 	}
 }
 
@@ -127,19 +128,23 @@ func (a *App) GetListInfo() ListInfo {
 
 // UpdateList downloads the latest package list and activates it when newer
 func (a *App) UpdateList() (ListInfo, error) {
+	url := os.Getenv("NOIRXD_LIST_URL")
+	if url == "" {
+		url = remoteListURL
+	}
 	client := &http.Client{Timeout: 15 * time.Second}
-	resp, err := client.Get(remoteListURL)
+	resp, err := client.Get(url)
 	if err != nil {
-		return a.GetListInfo(), fmt.Errorf("downloading package list: %w", err)
+		return a.GetListInfo(), fmt.Errorf("al descargar la lista de paquetes: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return a.GetListInfo(), fmt.Errorf("downloading package list: HTTP %d", resp.StatusCode)
+		return a.GetListInfo(), fmt.Errorf("al descargar la lista de paquetes: HTTP %d", resp.StatusCode)
 	}
 
 	data, err := io.ReadAll(io.LimitReader(resp.Body, maxListSize))
 	if err != nil {
-		return a.GetListInfo(), fmt.Errorf("reading package list: %w", err)
+		return a.GetListInfo(), fmt.Errorf("al leer la lista de paquetes: %w", err)
 	}
 	remote, err := parseList(data)
 	if err != nil {
@@ -150,7 +155,7 @@ func (a *App) UpdateList() (ListInfo, error) {
 		return a.GetListInfo(), nil
 	}
 
-	applyList(remote, "downloaded")
+	applyList(remote, "descargada")
 	if path, err := cachePath(); err == nil {
 		if err := os.MkdirAll(filepath.Dir(path), 0o755); err == nil {
 			_ = os.WriteFile(path, data, 0o644)

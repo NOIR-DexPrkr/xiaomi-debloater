@@ -5,7 +5,16 @@ interface FilterBarProps {
   onCategoryChange: (category: string) => void
 }
 
-const CATEGORIES = ['All', 'Bloatware', 'OEM', 'System', 'User', 'Disabled', 'Removed']
+// Keys stay in English; PackageList matches them against pkg.category
+const CATEGORIES: { key: string; label: string }[] = [
+  { key: 'All', label: 'Todas' },
+  { key: 'Bloatware', label: 'Bloatware' },
+  { key: 'OEM', label: 'OEM' },
+  { key: 'System', label: 'Sistema' },
+  { key: 'User', label: 'Usuario' },
+  { key: 'Disabled', label: 'Deshabilitadas' },
+  { key: 'Removed', label: 'Eliminadas' },
+]
 
 function FilterBar({ searchText, activeCategory, onSearchChange, onCategoryChange }: FilterBarProps) {
   return (
@@ -13,25 +22,25 @@ function FilterBar({ searchText, activeCategory, onSearchChange, onCategoryChang
       {/* Search Input */}
       <input
         type="text"
-        placeholder="Search packages..."
+        placeholder="Buscar paquetes..."
         value={searchText}
         onChange={(e) => onSearchChange(e.target.value)}
-        className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+        className="w-full bg-noir-surface border border-noir-border rounded-md px-3 py-2 text-sm text-noir-text placeholder-noir-muted focus:outline-none focus:border-noir-cyan"
       />
 
       {/* Category Tabs */}
       <div className="flex gap-2 flex-wrap">
         {CATEGORIES.map((cat) => (
           <button
-            key={cat}
-            onClick={() => onCategoryChange(cat)}
-            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-              activeCategory === cat
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            key={cat.key}
+            onClick={() => onCategoryChange(cat.key)}
+            className={`px-2.5 py-1 rounded border font-display font-bold text-[10px] uppercase tracking-[0.08em] transition-colors ${
+              activeCategory === cat.key
+                ? 'bg-noir-accent border-noir-cyan text-noir-cyan'
+                : 'bg-noir-surface border-noir-border text-noir-body hover:border-noir-border-hover hover:text-noir-text'
             }`}
           >
-            {cat}
+            {cat.label}
           </button>
         ))}
       </div>

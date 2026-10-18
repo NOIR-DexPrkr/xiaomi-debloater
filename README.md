@@ -1,85 +1,129 @@
-# Xiaomi Debloater — remove MIUI & HyperOS bloatware without root
+# NoirXD — elimina el bloatware de MIUI y HyperOS sin root
 
-**Xiaomi Debloater** is a free, open-source desktop app for removing bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones running **MIUI** or **HyperOS 1, 2 and 3**. It works over ADB, needs **no root and no bootloader unlock**, and runs on **Windows, macOS and Linux**.
+**NoirXD** (anteriormente Xiaomi Debloater) es una app de escritorio gratuita y de código
+abierto para eliminar bloatware, anuncios y telemetría de los teléfonos Xiaomi, Redmi y POCO
+con **MIUI** o **HyperOS 1, 2 y 3**. Funciona por ADB, **sin root y sin desbloquear el
+bootloader**, y corre en **Windows, macOS y Linux**.
 
-Unlike general-purpose tools, it only covers Xiaomi. The package list is built for MIUI and HyperOS, rates each package's risk, and gets updates for new Xiaomi OS releases without you reinstalling the app.
+A diferencia de las herramientas genéricas, se enfoca solo en Xiaomi: la lista de paquetes está
+construida para MIUI y HyperOS, califica el riesgo de cada paquete y se actualiza con cada nueva
+versión del sistema sin necesidad de reinstalar la app.
 
-<!-- Add a screenshot of the Packages tab with a phone connected, saved as docs/screenshot.png:
-![Xiaomi Debloater showing HyperOS packages with risk levels](docs/screenshot.png)
+> **Aviso de fork:** NoirXD es un fork de
+> [fadeltd/xiaomi-debloater](https://github.com/fadeltd/xiaomi-debloater) de
+> **Fadel Trivandi Dipantara**, renombrado como NoirXD con interfaz en español (LatAm) y la
+> identidad visual *Flat Noir*. Los releases se publican aquí y la lista de paquetes se
+> mantiene en este repositorio. Ver [Créditos](#créditos).
+
+<!-- Añade una captura de la pestaña Paquetes con un teléfono conectado en docs/screenshot.png:
+![NoirXD mostrando paquetes de HyperOS con sus niveles de riesgo](docs/screenshot.png)
 -->
 
-## Features
+## Características
 
-- **640+ MIUI / HyperOS packages** with plain-English descriptions and a risk rating: 288 safe, 218 caution, 134 danger ("never remove").
-- **Always up to date:** the app downloads the latest package list from this repo, so new HyperOS packages are recognised as soon as they are added here.
-- **Reversible:** apps are uninstalled for your user only (`pm uninstall -k --user 0`). Removed apps stay listed in the **Removed** tab with a Restore button; nothing is deleted from the system partition.
-- **Disable, uninstall, enable, restore** per app, or remove many at once after a confirmation.
-- **Filter** by Bloatware, OEM (Xiaomi apps), System, User and Disabled, or search by name.
-- **Built-in guide** to debloating MIUI and HyperOS safely, including privacy settings that need no ADB.
-- Detects the phone model, MIUI or HyperOS version, and Android version.
-- Every action is recorded in an operation log.
+- **640+ paquetes de MIUI / HyperOS** con descripciones claras y calificación de riesgo: 288
+  seguros, 218 con precaución y 134 peligrosos ("nunca eliminar").
+- **Siempre actualizada:** la app descarga la última lista de paquetes desde este repositorio,
+  así que los paquetes nuevos de HyperOS se reconocen en cuanto se añaden aquí.
+- **Reversible:** las apps se desinstalan solo para tu usuario (`pm uninstall -k --user 0`).
+  Las apps eliminadas siguen listadas en la pestaña **Eliminadas** con un botón de restaurar;
+  no se borra nada de la partición del sistema.
+- **Deshabilitar, desinstalar, habilitar y restaurar** app por app, o eliminar muchas a la vez
+  tras una confirmación.
+- **Filtros** por Bloatware, OEM (apps de Xiaomi), Sistema, Usuario y Deshabilitadas, o
+  búsqueda por nombre.
+- **Guía integrada** para debloatear MIUI y HyperOS con seguridad, incluyendo ajustes de
+  privacidad que no necesitan ADB.
+- Detecta el modelo del teléfono, la versión de MIUI u HyperOS y la versión de Android.
+- Cada acción queda registrada en el registro de operaciones.
 
-## Supported phones
+## Teléfonos compatibles
 
-Any Xiaomi, Redmi or POCO phone with MIUI 12–14 or HyperOS 1, 2 or 3, including Global, EEA, India and China ROMs. HyperOS 3 packages come from the Xiaomi 15 Ultra, and other models share most of them. If a package on your phone is missing or wrongly labelled, please [report it](../../issues/new?template=package-report.yml).
+Cualquier Xiaomi, Redmi o POCO con MIUI 12–14 o HyperOS 1, 2 o 3, incluidas ROMs Global, EEA,
+India y China. Los paquetes de HyperOS 3 provienen del Xiaomi 15 Ultra y la mayoría de los
+modelos actuales los comparten. Si falta un paquete de tu teléfono o está mal etiquetado,
+[repórtalo](../../issues/new).
 
-## How to debloat your Xiaomi phone
+## Cómo debloatear tu teléfono Xiaomi
 
-1. **Install ADB.** macOS: `brew install android-platform-tools`. Windows: `winget install Google.PlatformTools`. Linux: `sudo apt install adb`.
-2. **Enable Developer options:** Settings > About phone, tap *MIUI version* or *OS version* 7 times.
-3. **Enable USB debugging:** Settings > Additional settings > Developer options > *USB debugging*.
-4. **Connect the phone by USB** and tap *Allow* on the "Allow USB debugging?" prompt.
-5. **Open Xiaomi Debloater.** Your phone and its packages appear within a few seconds.
-6. Start with the **Bloatware** tab and packages marked `safe`. Leave `danger` packages alone.
+1. **Instala ADB.** macOS: `brew install android-platform-tools`. Windows:
+   `winget install Google.PlatformTools`. Linux: `sudo apt install adb`.
+2. **Activa las opciones de desarrollador:** Ajustes > Acerca del teléfono, toca *Versión de
+   MIUI* o *Versión del OS* 7 veces.
+3. **Activa la depuración por USB:** Ajustes > Ajustes adicionales > Opciones de
+   desarrollador > *Depuración por USB*.
+4. **Conecta el teléfono por USB** y toca *Permitir* en el aviso "¿Permitir depuración por
+   USB?".
+5. **Abre NoirXD.** Tu teléfono y sus paquetes aparecen en unos segundos.
+6. Empieza por la pestaña **Bloatware** y los paquetes marcados como `seguro`. Deja en paz los
+   paquetes `peligrosos`.
 
-Read the in-app **Guide** tab before removing anything marked `caution`.
+Lee la pestaña **Guía** de la app antes de eliminar nada marcado con `precaución`.
 
-## Install
+## Instalación
 
-Every package manager below installs adb for you.
+Descarga la app para tu plataforma desde [Releases](../../releases), o
+[compílala tú mismo](CONTRIBUTING.md#building-the-app).
 
-| Platform | Command |
+| Plataforma | Archivo |
 |---|---|
-| macOS (Homebrew) | `brew install --cask fadeltd/tap/xiaomi-debloater` |
-| Windows (winget) | `winget install fadeltd.XiaomiDebloater` |
-| Windows (Scoop) | `scoop bucket add fadeltd https://github.com/fadeltd/scoop-bucket` then `scoop install xiaomi-debloater` |
-| Ubuntu, Debian, Mint | Download the `.deb` from [Releases](../../releases), then `sudo apt install ./xiaomi-debloater_*.deb` |
-| Fedora, openSUSE | Download the `.rpm` from [Releases](../../releases), then `sudo dnf install ./xiaomi-debloater-*.rpm` |
-| Linux (Snap) | `sudo snap install android-debloater` then `sudo snap connect android-debloater:adb-support` |
+| Windows | `noirxd-vX.Y.Z-windows-amd64.exe` (o `-arm64.exe`) |
+| macOS (universal) | `noirxd-vX.Y.Z-macos-universal.zip` |
+| Linux (tar.gz) | `noirxd-vX.Y.Z-linux-amd64.tar.gz` (o `-arm64.tar.gz`) |
+| Ubuntu, Debian, Mint | `.deb` desde [Releases](../../releases), luego `sudo apt install ./noirxd_*.deb` |
+| Fedora, openSUSE | `.rpm` desde [Releases](../../releases), luego `sudo dnf install ./noirxd-*.rpm` |
 
-Or download the app for Windows, macOS or Linux from [Releases](../../releases), or [build it yourself](CONTRIBUTING.md#building-the-app).
+**macOS:** la app todavía no está notarizada por Apple, así que macOS bloquea el primer
+arranque. Ejecuta `xattr -dr com.apple.quarantine "/Applications/NoirXD.app"`, o ábrela una vez
+y luego haz clic en *Abrir de todos modos* en Ajustes > Privacidad y seguridad.
 
-**macOS:** the app is not notarized by Apple yet, so macOS blocks the first launch. Run `xattr -dr com.apple.quarantine "/Applications/Xiaomi Debloater.app"`, or open it once, then click *Open Anyway* in System Settings > Privacy & Security.
+## Preguntas frecuentes
 
-**Snap:** the snap bundles its own adb. Stop any other adb server first (`adb kill-server`), because only one can use the phone at a time.
+**¿Es seguro?** Los paquetes se eliminan solo para el usuario actual, así que se pueden
+restaurar. Eliminar un paquete marcado como `peligroso` igual puede impedir que el teléfono
+arranque bien, y la solución puede ser un restablecimiento de fábrica. Haz una copia de
+seguridad antes.
 
-## FAQ
+**¿Cómo restauro una app eliminada?** Usa *Restaurar* en la app, o ejecuta
+`adb shell cmd package install-existing <nombre.del.paquete>`. Un restablecimiento de fábrica
+también restaura todo.
 
-**Is it safe?** Packages are removed only for the current user, so they can be restored. Removing a package marked `danger` can still stop the phone from booting properly, and the fix may be a factory reset. Back up first.
+**¿Necesito root o un bootloader desbloqueado?** No. Todo funciona por ADB con la depuración
+por USB.
 
-**How do I restore a removed app?** Use *Restore* in the app, or run `adb shell cmd package install-existing <package.name>`. A factory reset also restores everything.
+**¿Las actualizaciones OTA seguirán funcionando?** Sí. Las desinstalaciones por usuario no
+bloquean las actualizaciones, pero las actualizaciones grandes pueden devolver el bloat y añadir
+paquetes nuevos. Actualiza la lista en la app y vuelve a revisar tras cada actualización del
+sistema.
 
-**Do I need root or an unlocked bootloader?** No. Everything runs through ADB with USB debugging.
+**¿En qué se diferencia de Universal Android Debloater?**
+[UAD-ng](https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation)
+es excelente y cubre todas las marcas. NoirXD se enfoca solo en Xiaomi, con la lista versionada
+por MIUI/HyperOS y una guía específica de Xiaomi.
 
-**Will OTA updates still work?** Yes. User-level uninstalls don't block updates, but major updates can bring bloat back and add new packages. Update the list in the app and check again after each system update.
+## Contribuir
 
-**Why not Universal Android Debloater?** [UAD-ng](https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation) is excellent and covers every brand. Xiaomi Debloater focuses on Xiaomi only, with a list tracked per MIUI/HyperOS version and Xiaomi-specific guidance.
+Las correcciones de la lista de paquetes son la contribución más útil. Ver
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Contributing
+## Créditos
 
-Package list corrections are the most useful contribution. See [CONTRIBUTING.md](CONTRIBUTING.md).
+**NoirXD es un fork de [Xiaomi Debloater](https://github.com/fadeltd/xiaomi-debloater),
+creado por [Fadel Trivandi Dipantara](https://github.com/fadeltd)** y distribuido bajo licencia
+GPL-3.0. Todo el trabajo original — el motor ADB, la lógica de desinstalación y la estructura
+del proyecto — le pertenece; NoirXD le suma la interfaz en español, el rediseño *Flat Noir* y
+la curaduría de la lista en este repositorio.
 
-## Credits
-
-The package list and guide were compiled from, and credit goes to:
+La lista de paquetes y la guía se compilaron a partir de, y el crédito correspondiente es para:
 [UAD-ng](https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation),
 [ovsky/hyperos-debloater](https://github.com/ovsky/hyperos-debloater),
 [matthieu-pierson/debloat-hyperos-adb](https://github.com/matthieu-pierson/debloat-hyperos-adb),
 [kirthandev/MIUI-Debloater-official](https://github.com/kirthandev/MIUI-Debloater-official),
-[KernelTruth's MIUI list](https://gist.github.com/KernelTruth/b85b55154c894ad77c6b62c01bfc4b50),
-the [XDA Xiaomi 15 Ultra debloat thread](https://xdaforums.com/t/xiaomi-15-ultra-global-debloat-list.4726400/)
-and the [r/miui debloat & privacy guide](https://www.reddit.com/r/miui/comments/1sd50rf/the_ultimate_miui_debloat_privacy_guide_no_root/).
+[la lista de MIUI de KernelTruth](https://gist.github.com/KernelTruth/b85b55154c894ad77c6b62c01bfc4b50),
+el [hilo de debloat del Xiaomi 15 Ultra en XDA](https://xdaforums.com/t/xiaomi-15-ultra-global-debloat-list.4726400/)
+y la [guía de debloat y privacidad de r/miui](https://www.reddit.com/r/miui/comments/1sd50rf/the_ultimate_miui_debloat_privacy_guide_no_root/).
 
-## License
+## Licencia
 
-[GPL-3.0](LICENSE). Xiaomi, MIUI, HyperOS, Redmi and POCO are trademarks of Xiaomi Inc. This project is not affiliated with or endorsed by Xiaomi.
+[GPL-3.0](LICENSE). Xiaomi, MIUI, HyperOS, Redmi y POCO son marcas de Xiaomi Inc. Este
+proyecto no está afiliado ni respaldado por Xiaomi.

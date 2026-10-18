@@ -1,7 +1,7 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
-  "name": "xiaomi-debloater",
-  "outputfilename": "xiaomi-debloater",
+  "name": "noirxd",
+  "outputfilename": "noirxd",
   "frontend:install": "pnpm install",
   "frontend:build": "pnpm build",
   "frontend:dev:watcher": "pnpm dev",
@@ -11,9 +11,9 @@
   },
   "info": {
     "companyName": "Fadel Trivandi Dipantara",
-    "productName": "Xiaomi Debloater",
+    "productName": "NoirXD",
     "productVersion": "1.1.0",
-    "copyright": "Copyright © Fadel Trivandi Dipantara. GPL-3.0.",
+    "copyright": "NoirXD © Dex Parker; obra original Xiaomi Debloater © Fadel Trivandi Dipantara. GPL-3.0.",
     "comments": "Remove MIUI and HyperOS bloatware over ADB, without root"
   }
 }

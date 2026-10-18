@@ -22,13 +22,13 @@ function DeviceHeader({
   if (!activeDevice) {
     return (
       <div className="flex items-center justify-between">
-        <div className="text-gray-400">No device connected</div>
+        <div className="text-noir-muted">Ningún dispositivo conectado</div>
         <button
           onClick={onRefresh}
           disabled={isLoading}
-          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded text-sm"
+          className="px-3 py-1 bg-noir-surface border border-noir-border rounded-md text-sm font-medium text-noir-text hover:border-noir-cyan hover:bg-noir-hover disabled:text-noir-muted transition-colors"
         >
-          {isLoading ? 'Refreshing...' : 'Refresh'}
+          {isLoading ? 'Actualizando...' : 'Actualizar'}
         </button>
       </div>
     )
@@ -39,11 +39,23 @@ function DeviceHeader({
       {/* Device Selector and Refresh */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-4 h-4 text-noir-cyan flex-shrink-0"
+          >
+            <rect x="7" y="2" width="10" height="20" rx="2" />
+            <path d="M11 18h2" />
+          </svg>
           {devices.length > 1 ? (
             <select
               value={selectedSerial}
               onChange={(e) => onSelectDevice(e.target.value)}
-              className="bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm"
+              className="bg-noir-surface border border-noir-border rounded px-2 py-1 text-sm text-noir-text focus:border-noir-cyan focus:outline-none"
             >
               {devices.map((d) => (
                 <option key={d.serial} value={d.serial}>
@@ -52,39 +64,41 @@ function DeviceHeader({
               ))}
             </select>
           ) : (
-            <span className="text-lg font-semibold">{activeDevice.model || activeDevice.product}</span>
+            <span className="font-display font-bold text-lg text-noir-text truncate">
+              {activeDevice.model || activeDevice.product}
+            </span>
           )}
         </div>
         <button
           onClick={onRefresh}
           disabled={isLoading}
-          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded text-sm"
+          className="px-3 py-1 bg-noir-surface border border-noir-border rounded-md text-sm font-medium text-noir-text hover:border-noir-cyan hover:bg-noir-hover disabled:text-noir-muted transition-colors"
         >
-          {isLoading ? '⟳ Refreshing...' : '⟳ Refresh'}
+          {isLoading ? '⟳ Actualizando...' : '⟳ Actualizar'}
         </button>
       </div>
 
       {/* Device Info */}
-      <div className="grid grid-cols-2 gap-3 text-xs text-gray-400">
+      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-noir-body">
         <div>
-          <span className="text-gray-500">Model:</span> {deviceInfo.model || activeDevice.model || 'Unknown'}
+          <span className="text-noir-muted">Modelo:</span> {deviceInfo.model || activeDevice.model || 'Desconocido'}
         </div>
         <div>
-          <span className="text-gray-500">Serial:</span> {selectedSerial}
+          <span className="text-noir-muted">Número de serie:</span> {selectedSerial}
         </div>
         <div>
           {deviceInfo.hyperos ? (
             <>
-              <span className="text-gray-500">HyperOS:</span> {deviceInfo.hyperos}
+              <span className="text-noir-muted">HyperOS:</span> {deviceInfo.hyperos}
             </>
           ) : (
             <>
-              <span className="text-gray-500">MIUI:</span> {deviceInfo.miui_version || 'Unknown'}
+              <span className="text-noir-muted">MIUI:</span> {deviceInfo.miui_version || 'Desconocido'}
             </>
           )}
         </div>
         <div>
-          <span className="text-gray-500">Android:</span> {deviceInfo.android || 'Unknown'}
+          <span className="text-noir-muted">Android:</span> {deviceInfo.android || 'Desconocido'}
         </div>
       </div>
     </div>

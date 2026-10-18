@@ -1,40 +1,94 @@
 # Changelog
 
-All notable changes to the Xiaomi Debloater app are documented here. Package
-list updates (`bloatware.json`) reach the app without a release, so they are
-not listed.
+Todos los cambios notables de NoirXD se documentan aquí. **NoirXD es un fork de
+[Xiaomi Debloater](https://github.com/fadeltd/xiaomi-debloater)**, creado por
+Fadel Trivandi Dipantara; este historial conserva las versiones originales de ese
+proyecto y le suma los cambios del fork. Las actualizaciones de la lista de
+paquetes (`bloatware.json`) llegan a la app sin un release, por lo que no se listan.
 
-The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
-this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+El formato sigue [Keep a Changelog](https://keepachangelog.com/es/1.1.0/), y
+este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+Los encabezados de sección deciden la versión del siguiente release:
+`### Ruptura` → mayor, `### Añadido` → menor, cualquier otro → parche.
 
 ## [Unreleased]
 
-### Security
-- The Snap package now includes the libsoup security update from
-  USN-8890-1. Other packages are rebuilt but unchanged.
+### Añadido
+- Vista de inicio con la marca NoirXD: un hero con el nombre de la app, un
+  resumen de lo que hace y dos tarjetas de acceso rápido (Iniciar y Guía),
+  fondo cinético de varias líneas, el avatar de Dex Parker y los créditos.
+- Navegación con sidebar (Debloater, Guía, Configuración) al entrar desde el
+  inicio; la vista de inicio queda libre de pestañas.
+- Pestaña Configuración con todo el estado del sistema: ADB (versión,
+  reintentar, instalar), versión y fuente de la lista de paquetes con
+  actualización, modo avanzado y dispositivos conectados.
+- Iconos de cada app en la lista: avatar con las iniciales al instante y el
+  icono real de Google Play cargado en segundo plano (con caché).
+- Control de orden en la tabla del Debloater: nombre A ↔ Z, riesgo
+  (seguro ↔ peligroso) y categoría.
+- Tarjeta de ADB en la vista de inicio: detecta si ADB está instalado y, si
+  no, muestra el comando de instalación más fácil para tu sistema con un botón
+  de copiar, más alternativas por si ese método falla.
+
+### Cambiado
+- La pestaña de paquetes ahora se llama Debloater, y la navegación pasó de
+  pestañas superiores a una sidebar con logo, Debloater, Guía y
+  Configuración.
+- Las acciones viven sobre la selección: marca filas y usa el panel
+  contextual (Deshabilitar, Habilitar, Desinstalar o Restaurar) con una
+  explicación de qué hace cada una; se quitaron los botones de cada fila.
+- El registro de operaciones solo aparece en el Debloater, colapsado por
+  defecto, y se despliega solo en cuanto arranca la primera acción.
+- La app ahora se llama NoirXD ("Noir - Xiaomi Debloater"), incluido el título
+  de la ventana y el About de macOS, con créditos al proyecto original
+  Xiaomi Debloater en la app, el README y la web.
+- El binario y los artefactos de release ahora se llaman `noirxd`.
+- La lista de paquetes se descarga ahora de este fork
+  (NOIR-DexPrkr/xiaomi-debloater) en lugar de la de upstream; usa la variable
+  de entorno `NOIRXD_LIST_URL` para descargarla de otro lugar.
+- Nuevo look Flat Noir en toda la app: fondos oscuros profundos, bordes de 1px,
+  acentos cyan y tipografías Montserrat/Inter/JetBrains Mono.
+- Toda la app ahora está en español (LatAm): interfaz, guía y mensajes de
+  operación.
+- Las aplicaciones marcadas como peligrosas están ocultas de la lista por
+  defecto. Activa el "Modo avanzado" en la configuración para verlas y
+  gestionarlas.
+- Se eliminaron los canales de publicación de upstream (Homebrew, Scoop,
+  winget, Snap y Chocolatey); las builds se publican como archivos adjuntos
+  del release de GitHub.
+- Nuevo icono de la app (el NR/XD de DexNR con su mascota) en la app, los
+  binarios, los paquetes de Linux y la web.
 
 ## [1.1.0] — 2026-09-27
 
-### Added
-- Install with a package manager: Homebrew (`brew install --cask fadeltd/tap/xiaomi-debloater`),
-  winget, Scoop, or Snap (as `android-debloater`). Each one installs adb as well.
-- `.deb` and `.rpm` packages for Linux, with a desktop entry and icon.
-- Releases are built and published by GitHub Actions from this changelog.
+### Añadido
+- Instalación con gestores de paquetes: Homebrew
+  (`brew install --cask fadeltd/tap/xiaomi-debloater`), winget, Scoop o Snap
+  (como `android-debloater`). Todos instalan adb también.
+- Paquetes `.deb` y `.rpm` para Linux, con entrada de escritorio e icono.
+- Los releases se construyen y publican con GitHub Actions desde este
+  changelog.
 
-### Changed
-- The macOS bundle identifier is now `io.github.fadeltd.xiaomi-debloater`
-  instead of the Wails default `com.wails.xiaomi-debloater`.
+### Cambiado
+- El identificador de bundle de macOS ahora es
+  `io.github.fadeltd.xiaomi-debloater` en lugar del predeterminado de Wails,
+  `com.wails.xiaomi-debloater`.
 
 ## [1.0.0] — 2026-09-27
 
-### Added
-- First release for Windows, macOS and Linux.
-- 640+ MIUI and HyperOS packages with descriptions and a safe, caution or
-  danger rating.
-- Package list updates downloaded from this repository without reinstalling.
-- Disable, uninstall, enable and restore per app, or remove many at once.
-- Removed tab with a Restore button for every app uninstalled for user 0.
-- Filters for Bloatware, OEM, System, User and Disabled packages, and search.
-- Built-in guide to debloating MIUI and HyperOS safely.
-- Device detection for model, MIUI or HyperOS version and Android version.
-- Operation log of every action.
+### Añadido
+- Primera release para Windows, macOS y Linux.
+- Más de 640 paquetes de MIUI y HyperOS con descripciones y calificación de
+  riesgo: seguro, precaución o peligroso.
+- Actualizaciones de la lista de paquetes descargadas desde este repositorio
+  sin reinstalar la app.
+- Deshabilitar, desinstalar, habilitar y restaurar app por app, o eliminar
+  muchas a la vez.
+- Pestaña Eliminadas con un botón de restaurar para cada app desinstalada
+  para el usuario 0.
+- Filtros por paquetes Bloatware, OEM, Sistema, Usuario y Deshabilitados, y
+  búsqueda.
+- Guía integrada para debloatear MIUI y HyperOS con seguridad.
+- Detección del modelo del dispositivo, la versión de MIUI u HyperOS y la
+  versión de Android.
+- Registro de operaciones de cada acción.

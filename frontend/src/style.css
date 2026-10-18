@@ -1,40 +1,107 @@
 @import "tailwindcss";
 
+/* DexNR / Flat Noir design tokens (ID-VISUAL-DEXNR.md) */
+@theme {
+  --color-noir: #07080A;
+  --color-noir-surface: #0E1015;
+  --color-noir-sunken: #000000;
+  --color-noir-hover: #161922;
+  --color-noir-border: #1C2029;
+  --color-noir-border-hover: #2E3440;
+  --color-noir-cyan: #00D8FF;
+  --color-noir-cyan-hover: #38E2FF;
+  --color-noir-blue: #3B82F6;
+  --color-noir-accent: #081C24;
+  --color-noir-text: #FFFFFF;
+  --color-noir-body: #A1A7B3;
+  --color-noir-muted: #5A6270;
+  --font-display: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
+}
+
 html {
-    background-color: rgba(27, 38, 54, 1);
+    background-color: #07080A;
 }
 
 body {
     margin: 0;
-    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-}
-
-@font-face {
-    font-family: "Nunito";
-    font-style: normal;
-    font-weight: 400;
-    src: local(""),
-    url("assets/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+    font-family: var(--font-sans);
 }
 
 #root {
     height: 100vh;
 }
 
+/* Themed checkboxes (Flat Noir) */
+.noir-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #2E3440;
+    border-radius: 4px;
+    background: #000000;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+.noir-checkbox:hover { border-color: #00D8FF; }
+.noir-checkbox:checked { background: #00D8FF; border-color: #00D8FF; }
+.noir-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1.5px;
+    width: 4px;
+    height: 8px;
+    border: solid #07080A;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.noir-checkbox:focus-visible { outline: 1px solid #00D8FF; outline-offset: 2px; }
+
+/* Themed scrollbars (Flat Noir) */
+* { scrollbar-width: thin; scrollbar-color: #2E3440 #07080A; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #07080A; }
+::-webkit-scrollbar-thumb {
+    background: #1C2029;
+    border: 2px solid #07080A;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover { background: #2E3440; }
+::-webkit-scrollbar-corner { background: #07080A; }
+
+/* Kinetic marquee background (DEXNR hero) */
+@keyframes noir-marquee-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+@keyframes noir-marquee-right {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+}
+.noir-marquee-row { overflow: hidden; width: 100%; }
+.noir-marquee-track { display: flex; width: max-content; }
+.noir-marquee-track-left { animation: noir-marquee-left 60s linear infinite; }
+.noir-marquee-track-right { animation: noir-marquee-right 60s linear infinite; }
+
 /* Guide page (rendered from guide.md) */
-.guide { color: var(--color-gray-300); font-size: 0.9rem; line-height: 1.65; }
-.guide h1 { color: white; font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem; }
-.guide h2 { color: white; font-size: 1.15rem; font-weight: 600; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--color-gray-700); }
+.guide { color: #A1A7B3; font-size: 0.9rem; line-height: 1.65; }
+.guide h1 { color: #FFFFFF; font-family: var(--font-display); font-weight: 900; letter-spacing: -0.03em; font-size: 1.6rem; margin-bottom: 1rem; }
+.guide h2 { color: #FFFFFF; font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; font-size: 1.15rem; margin: 2rem 0 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid #1C2029; }
 .guide p { margin: 0.6rem 0; }
 .guide ul, .guide ol { margin: 0.6rem 0; padding-left: 1.4rem; }
 .guide ul { list-style: disc; }
 .guide ol { list-style: decimal; }
 .guide li { margin: 0.35rem 0; }
-.guide strong { color: var(--color-gray-100); }
-.guide a { color: var(--color-blue-400); text-decoration: underline; word-break: break-all; }
-.guide code { background: var(--color-gray-800); color: var(--color-orange-300); padding: 0.1rem 0.35rem; border-radius: 0.25rem; font-size: 0.8rem; }
+.guide strong { color: #FFFFFF; }
+.guide a { color: #3B82F6; text-decoration: underline; word-break: break-all; }
+.guide code { background: #000000; border: 1px solid #1C2029; color: #00D8FF; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.8rem; font-family: var(--font-mono); }
+.guide blockquote { border-left: 3px solid #00D8FF; background: #0E1015; margin: 0.8rem 0; padding: 0.5rem 1rem; }
+.guide hr { border: none; border-top: 1px solid #1C2029; }
 .guide table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.85rem; }
-.guide th, .guide td { border: 1px solid var(--color-gray-700); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
-.guide th { background: var(--color-gray-800); color: var(--color-gray-100); }
+.guide th, .guide td { border: 1px solid #1C2029; padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+.guide th { background: #0E1015; color: #FFFFFF; font-family: var(--font-display); font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }

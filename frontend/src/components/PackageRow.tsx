@@ -1,159 +1,98 @@
-import { useState } from 'react'
 import { main } from '../../wailsjs/go/models.js'
-import {
-  UninstallPackage,
-  DisablePackage,
-  EnablePackage,
-  ReinstallPackage,
-} from '../../wailsjs/go/main/App.js'
+import AppIcon from './AppIcon'
 
 interface PackageRowProps {
   pkg: main.AppPackage
-  serial: string
   isSelected: boolean
   onToggleSelect: (name: string) => void
-  onAddLog: (pkgName: string, message: string, success: boolean) => void
-  onPackageUpdated: () => void
 }
 
-function PackageRow({
-  pkg,
-  serial,
-  isSelected,
-  onToggleSelect,
-  onAddLog,
-  onPackageUpdated,
-}: PackageRowProps) {
-  // Risky actions on "danger" packages need a second click to confirm
-  const [armed, setArmed] = useState<'disable' | 'uninstall' | null>(null)
-  const getRiskBadgeColor = () => {
+function PackageRow({ pkg, isSelected, onToggleSelect }: PackageRowProps) {
+  const getRiskBadgeClass = () => {
     switch (pkg.risk) {
       case 'safe':
-        return 'bg-green-900 text-green-200'
+        return 'bg-noir-accent border-noir-cyan text-noir-cyan'
       case 'caution':
-        return 'bg-yellow-900 text-yellow-200'
+        return 'bg-[#1A1400] border-amber-500 text-amber-500'
       case 'danger':
-        return 'bg-red-900 text-red-200'
+        return 'bg-[#1A0505] border-red-500 text-red-500'
       default:
-        return 'bg-gray-700 text-gray-200'
+        return 'bg-noir-surface border-noir-border text-noir-body'
     }
   }
 
-  const getCategoryColor = () => {
+  const getCategoryLabel = () => {
     switch (pkg.category) {
       case 'bloatware':
-        return 'bg-purple-900 text-purple-200'
+        return 'Bloatware'
       case 'oem':
-        return 'bg-blue-900 text-blue-200'
+        return 'OEM'
       case 'system':
-        return 'bg-orange-900 text-orange-200'
+        return 'Sistema'
       case 'user':
-        return 'bg-gray-700 text-gray-200'
+        return 'Usuario'
       default:
-        return 'bg-gray-700 text-gray-200'
+        return pkg.category
     }
   }
 
-  const handleAction = async (action: 'disable' | 'uninstall' | 'enable' | 'restore') => {
-    if (pkg.risk === 'danger' && (action === 'disable' || action === 'uninstall') && armed !== action) {
-      setArmed(action)
-      return
-    }
-    setArmed(null)
-
-    let result: main.ActionResult | null = null
-
-    try {
-      switch (action) {
-        case 'disable':
-          result = await DisablePackage(serial, pkg.name)
-          break
-        case 'uninstall':
-          result = await UninstallPackage(serial, pkg.name)
-          break
-        case 'enable':
-          result = await EnablePackage(serial, pkg.name)
-          break
-        case 'restore':
-          result = await ReinstallPackage(serial, pkg.name)
-          break
-      }
-
-      if (result) {
-        onAddLog(pkg.name, result.message, result.success)
-        if (result.success) {
-          onPackageUpdated()
-        }
-      }
-    } catch (err) {
-      onAddLog(pkg.name, `Action failed: ${err}`, false)
+  const getRiskLabel = () => {
+    switch (pkg.risk) {
+      case 'safe':
+        return 'Seguro'
+      case 'caution':
+        return 'Precaución'
+      case 'danger':
+        return 'Peligro'
+      default:
+        return pkg.risk
     }
   }
-
-  const shouldShowDisable = pkg.is_installed && pkg.is_enabled
-  const shouldShowUninstall = pkg.is_installed
-  const shouldShowEnable = pkg.is_installed && !pkg.is_enabled
-  const shouldShowRestore = !pkg.is_installed
 
   return (
-    <tr className="border-t border-gray-700 hover:bg-gray-800 transition-colors">
-      <td className="px-4 py-2 w-12">
+    <tr className="border-t border-noir-border hover:bg-noir-hover transition-colors">
+      <td className="px-4 py-2 w-10 align-middle">
         <input
           type="checkbox"
           checked={isSelected}
           onChange={() => onToggleSelect(pkg.name)}
-          className="rounded"
+          className="noir-checkbox"
         />
       </td>
-      <td className="px-4 py-2 font-mono text-xs text-gray-400 max-w-xs truncate" title={pkg.name}>
-        {pkg.name}
-        {!pkg.is_installed && <span className="ml-2 text-gray-500">(removed)</span>}
-        {pkg.is_installed && !pkg.is_enabled && <span className="ml-2 text-gray-500">(disabled)</span>}
-      </td>
-      <td className="px-4 py-2 text-sm text-gray-400 flex-1">{pkg.description}</td>
       <td className="px-4 py-2">
-        <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor()}`}>
-          {pkg.category}
+        <div className="flex items-start gap-3 min-w-0">
+          <AppIcon pkg={pkg.name} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-mono text-xs text-noir-body break-all" title={pkg.name}>
+                {pkg.name}
+              </span>
+              {!pkg.is_installed && (
+                <span className="shrink-0 px-1.5 py-0.5 rounded border border-noir-blue/60 text-noir-blue text-[9px] uppercase tracking-[0.08em]">
+                  eliminado
+                </span>
+              )}
+              {pkg.is_installed && !pkg.is_enabled && (
+                <span className="shrink-0 px-1.5 py-0.5 rounded border border-amber-500/60 text-amber-500 text-[9px] uppercase tracking-[0.08em]">
+                  deshabilitado
+                </span>
+              )}
+            </div>
+            <div className="text-[11px] text-noir-muted leading-snug">{pkg.description}</div>
+          </div>
+        </div>
+      </td>
+      <td className="px-4 py-2">
+        <span className="px-2 py-0.5 rounded border bg-noir-surface border-noir-border text-noir-body font-display font-bold text-[10px] uppercase tracking-[0.08em] whitespace-nowrap">
+          {getCategoryLabel()}
         </span>
       </td>
       <td className="px-4 py-2">
-        <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskBadgeColor()}`}>
-          {pkg.risk}
+        <span
+          className={`px-2 py-0.5 rounded border font-display font-bold text-[10px] uppercase tracking-[0.08em] whitespace-nowrap ${getRiskBadgeClass()}`}
+        >
+          {getRiskLabel()}
         </span>
-      </td>
-      <td className="px-4 py-2 flex gap-2 justify-end">
-        {shouldShowDisable && (
-          <button
-            onClick={() => handleAction('disable')}
-            className="px-2 py-1 bg-yellow-600 hover:bg-yellow-700 rounded text-xs"
-          >
-            {armed === 'disable' ? 'Confirm disable?' : 'Disable'}
-          </button>
-        )}
-        {shouldShowUninstall && (
-          <button
-            onClick={() => handleAction('uninstall')}
-            className="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-xs"
-          >
-            {armed === 'uninstall' ? 'Confirm uninstall?' : 'Uninstall'}
-          </button>
-        )}
-        {shouldShowEnable && (
-          <button
-            onClick={() => handleAction('enable')}
-            className="px-2 py-1 bg-green-600 hover:bg-green-700 rounded text-xs"
-          >
-            Enable
-          </button>
-        )}
-        {shouldShowRestore && (
-          <button
-            onClick={() => handleAction('restore')}
-            className="px-2 py-1 bg-blue-600 hover:bg-blue-700 rounded text-xs"
-          >
-            Restore
-          </button>
-        )}
       </td>
     </tr>
   )

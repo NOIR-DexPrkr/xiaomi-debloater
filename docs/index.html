@@ -1,29 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Xiaomi Debloater — Remove MIUI &amp; HyperOS Bloatware Without Root</title>
-<meta name="description" content="Free, open-source Xiaomi debloater for Windows, macOS and Linux. Remove MIUI and HyperOS bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones over ADB. No root, fully reversible.">
-<meta name="keywords" content="xiaomi debloater, hyperos debloater, miui debloater, remove miui ads, hyperos bloatware, redmi debloat, poco debloat, adb debloat no root">
-<link rel="canonical" href="https://fadeltd.github.io/xiaomi-debloater/">
+<title>NoirXD — Elimina el bloatware de MIUI y HyperOS sin root</title>
+<meta name="description" content="Debloater gratuito y de código abierto para Xiaomi, Redmi y POCO. Elimina el bloatware, los anuncios y la telemetría de MIUI y HyperOS por ADB. Sin root, reversible. Windows, macOS y Linux.">
+<meta name="keywords" content="noirxd, xiaomi debloater, hyperos debloater, miui debloater, remove miui ads, hyperos bloatware, redmi debloat, poco debloat, adb debloat no root">
+<link rel="canonical" href="https://noir-dexprkr.github.io/xiaomi-debloater/">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Xiaomi Debloater — Remove MIUI & HyperOS Bloatware Without Root">
-<meta property="og:description" content="Desktop app to remove bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones. MIUI and HyperOS 1–3. No root, reversible.">
-<meta property="og:url" content="https://fadeltd.github.io/xiaomi-debloater/">
-<meta property="og:image" content="https://fadeltd.github.io/xiaomi-debloater/icon.png">
+<meta property="og:title" content="NoirXD — Elimina el bloatware de MIUI y HyperOS sin root">
+<meta property="og:description" content="App de escritorio para eliminar bloatware, anuncios y telemetría de teléfonos Xiaomi, Redmi y POCO. MIUI y HyperOS 1–3. Sin root, reversible.">
+<meta property="og:url" content="https://noir-dexprkr.github.io/xiaomi-debloater/">
+<meta property="og:image" content="https://noir-dexprkr.github.io/xiaomi-debloater/icon.png">
 <meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Xiaomi Debloater",
+  "name": "NoirXD",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Windows, macOS, Linux",
-  "description": "Remove MIUI and HyperOS bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones over ADB, without root.",
-  "url": "https://fadeltd.github.io/xiaomi-debloater/",
-  "downloadUrl": "https://github.com/fadeltd/xiaomi-debloater/releases",
+  "description": "Elimina el bloatware, los anuncios y la telemetría de teléfonos Xiaomi, Redmi y POCO por ADB, sin root.",
+  "url": "https://noir-dexprkr.github.io/xiaomi-debloater/",
+  "downloadUrl": "https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases",
   "license": "https://www.gnu.org/licenses/gpl-3.0.html",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
@@ -33,108 +36,342 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "Is it safe to debloat a Xiaomi phone?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Xiaomi Debloater removes packages for the current user only, so they can be restored. Every package has a risk rating; packages marked danger can break calls, SIM, Settings or booting and should be left alone." } },
-    { "@type": "Question", "name": "Do I need root or an unlocked bootloader?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No. Xiaomi Debloater works over ADB with USB debugging enabled." } },
-    { "@type": "Question", "name": "How do I restore a removed app?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Use Restore in the app's Removed tab, or run adb shell cmd package install-existing followed by the package name. A factory reset also restores everything." } },
-    { "@type": "Question", "name": "Does it work on HyperOS?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The package list covers MIUI 12-14 and HyperOS 1, 2 and 3, and the app downloads list updates for new Xiaomi OS releases." } }
+    { "@type": "Question", "name": "¿Es seguro debloatear un teléfono Xiaomi?",
+      "acceptedAnswer": { "@type": "Answer", "text": "NoirXD elimina paquetes solo para el usuario actual, así que se pueden restaurar. Cada paquete tiene una calificación de riesgo; los marcados como peligrosos pueden romper llamadas, SIM, Ajustes o el arranque y no deben tocarse." } },
+    { "@type": "Question", "name": "¿Necesito root o un bootloader desbloqueado?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. NoirXD funciona por ADB con la depuración por USB activada." } },
+    { "@type": "Question", "name": "¿Cómo restauro una app eliminada?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Usa Restaurar en la pestaña Eliminadas de la app, o ejecuta adb shell cmd package install-existing seguido del nombre del paquete. Un restablecimiento de fábrica también restaura todo." } },
+    { "@type": "Question", "name": "¿Funciona con HyperOS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sí. La lista de paquetes cubre MIUI 12-14 y HyperOS 1, 2 y 3, y la app descarga actualizaciones de la lista para cada nueva versión del sistema." } }
   ]
 }
 </script>
 <style>
 :root {
-  --bg: #ffffff; --surface: #f6f7f9; --text: #15181d; --muted: #5a6270; --border: #e3e6eb;
-  --accent: #ff6900; --accent-text: #ffffff; --code-bg: #eef0f3;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f141b; --surface: #182029; --text: #e8ebef; --muted: #9aa4b2; --border: #2a3440;
-    --accent: #ff7a1a; --accent-text: #15181d; --code-bg: #1f2833;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0f141b; --surface: #182029; --text: #e8ebef; --muted: #9aa4b2; --border: #2a3440;
-  --accent: #ff7a1a; --accent-text: #15181d; --code-bg: #1f2833;
+  --bg: #07080A; --surface: #0E1015; --sunken: #000000; --hover: #161922;
+  --border: #1C2029; --border-hover: #2E3440;
+  --text: #FFFFFF; --muted: #A1A7B3; --dim: #5A6270;
+  --accent: #00D8FF; --blue: #3B82F6; --accent-surface: #081C24; --accent-text: #07080A;
+  --code-bg: #000000;
+  --font-display: "Montserrat", -apple-system, sans-serif;
+  --font-sans: "Inter", -apple-system, sans-serif;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
-  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font: 16px/1.65 var(--font-sans);
 }
+a { color: var(--accent); }
 .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
-header { padding: 64px 0 40px; text-align: center; }
-header img { width: 96px; height: 96px; }
-h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.2; margin: 16px 0 12px; }
-.lead { color: var(--muted); font-size: 1.15rem; max-width: 640px; margin: 0 auto 28px; }
+
+/* ---------- Navbar ---------- */
+.navbar {
+  height: 64px; display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 0;
+  background: rgba(7, 8, 10, 0.92); backdrop-filter: blur(6px); z-index: 20;
+}
+.navbar .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.navbar .brand img { width: 28px; height: 28px; }
+.navbar .brand span {
+  font-family: var(--font-display); font-weight: 900; font-size: 17px;
+  letter-spacing: -0.03em; text-transform: uppercase; color: var(--text);
+}
+.navbar .brand span em { font-style: normal; color: var(--accent); }
+.navbar nav { display: flex; align-items: center; gap: 18px; }
+.navbar nav a {
+  color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500;
+}
+.navbar nav a:hover { color: var(--text); }
+
+/* ---------- Hero (DEXNR style) ---------- */
+.hero {
+  position: relative; overflow: hidden; min-height: 460px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 56px 24px;
+}
+.marquee-bg {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: space-around; pointer-events: none; user-select: none;
+  opacity: 0.18; z-index: 0;
+}
+.marquee-row { overflow: hidden; width: 100%; }
+.marquee-track { display: flex; width: max-content; }
+.marquee-track.left { animation: marquee-left 60s linear infinite; }
+.marquee-track.right { animation: marquee-right 60s linear infinite; }
+.marquee-group { display: flex; flex-shrink: 0; }
+.marquee-group span {
+  font-family: var(--font-display); font-weight: 900; font-size: clamp(28px, 5vw, 54px);
+  text-transform: uppercase; letter-spacing: 0.04em; margin: 0 24px; color: var(--text);
+  white-space: nowrap;
+}
+@keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+.hero .avatar {
+  position: absolute; right: 2vw; bottom: 0; top: 56px; z-index: 1;
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  pointer-events: none; user-select: none;
+}
+.hero .avatar img {
+  height: 100%; width: auto; max-width: 300px; object-fit: contain; object-position: bottom;
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.9) 16%, black 90%);
+  mask-image: linear-gradient(to top, transparent 0%, rgba(0,0,0,0.9) 16%, black 90%);
+}
+.hero .content { position: relative; z-index: 2; max-width: 620px; }
+.hero .lockup { display: flex; align-items: center; gap: 16px; justify-content: center; margin-bottom: 14px; }
+.hero .lockup img { width: 72px; height: 72px; }
+.hero h1 {
+  margin: 0; font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(44px, 8vw, 64px); line-height: 1; letter-spacing: -0.03em;
+  text-transform: uppercase; color: var(--text);
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.badge {
+  display: inline-block; background: var(--accent-surface); border: 1px solid var(--accent);
+  color: var(--accent); border-radius: 4px; padding: 4px 10px; margin-bottom: 18px;
+  font-family: var(--font-display); font-weight: 700; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.lead { color: var(--muted); font-size: 16px; max-width: 560px; margin: 0 auto 26px; }
 .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .btn {
-  display: inline-block; padding: 12px 22px; border-radius: 10px; font-weight: 600; text-decoration: none;
-  border: 1px solid var(--border); color: var(--text);
+  display: inline-block; padding: 12px 22px; border-radius: 6px; font-weight: 600;
+  font-size: 14px; text-decoration: none; border: 1px solid var(--border);
+  color: var(--text); background: var(--surface); transition: border-color 0.15s, background 0.15s;
 }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
-section { padding: 32px 0; border-top: 1px solid var(--border); }
-h2 { font-size: 1.5rem; margin: 0 0 16px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-.card h3 { margin: 0 0 6px; font-size: 1.05rem; }
-.card p { margin: 0; color: var(--muted); }
-ol li, ul li { margin: 6px 0; }
-code { background: var(--code-bg); padding: 2px 6px; border-radius: 5px; font-size: 0.9em; word-break: break-word; }
-details { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
-summary { font-weight: 600; cursor: pointer; }
-details p { color: var(--muted); margin: 10px 0 0; }
-a { color: var(--accent); }
-footer { padding: 32px 0 48px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border); }
+.btn:hover { border-color: var(--accent); background: var(--hover); }
+.btn.primary {
+  background: var(--accent); border-color: var(--accent); color: var(--accent-text);
+}
+.btn.primary:hover { background: #38E2FF; border-color: #38E2FF; }
+
+/* ---------- Sections ---------- */
+section { padding: 40px 0; border-top: 1px solid var(--border); }
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.section-head h2 {
+  margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+}
+.section-head .meta { font-size: 12px; color: var(--dim); }
+
+/* ---------- Cards ---------- */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 24px; transition: border-color 0.15s;
+}
+.card:hover { border-color: var(--accent); }
+.card .icon {
+  width: 36px; height: 36px; border-radius: 6px; background: var(--bg);
+  border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+  color: var(--dim); margin-bottom: 14px; transition: color 0.15s, border-color 0.15s;
+}
+.card:hover .icon { color: var(--accent); border-color: rgba(0, 216, 255, 0.5); }
+.card .icon svg { width: 18px; height: 18px; }
+.card h3 {
+  margin: 0 0 6px; font-size: 15px; font-weight: 600; color: var(--text);
+  font-family: var(--font-sans);
+}
+.card p { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+
+/* ---------- Steps (01, 02 … signature style) ---------- */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.steps li {
+  display: flex; gap: 18px; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 18px; transition: border-color 0.15s;
+}
+.steps li:hover { border-color: var(--border-hover); }
+.step-num {
+  font-family: var(--font-display); font-weight: 900; font-size: 26px;
+  line-height: 1; color: var(--dim); flex-shrink: 0; min-width: 38px;
+}
+.steps li p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.steps li p strong { color: var(--text); font-weight: 600; }
+
+/* ---------- FAQ details ---------- */
+.faq { display: grid; gap: 10px; }
+details {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  transition: border-color 0.15s;
+}
+details:hover { border-color: var(--border-hover); }
+details[open] { border-color: var(--accent); }
+summary {
+  list-style: none; cursor: pointer; font-weight: 600; font-size: 14.5px;
+  padding: 15px 18px; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; color: var(--text);
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  content: "+"; font-family: var(--font-display); font-weight: 900; font-size: 18px;
+  color: var(--accent); flex-shrink: 0;
+}
+details[open] summary::after { content: "−"; }
+details .answer { padding: 0 18px 16px; color: var(--muted); font-size: 14.5px; margin: 0; }
+
+code {
+  background: var(--code-bg); border: 1px solid var(--border); padding: 1px 5px;
+  border-radius: 4px; font-size: 0.88em; word-break: break-word;
+  color: var(--accent); font-family: ui-monospace, "Cascadia Mono", monospace;
+}
+footer {
+  padding: 32px 0 48px; color: var(--muted); font-size: 0.88rem;
+  border-top: 1px solid var(--border); text-align: center;
+}
+footer strong { color: var(--text); }
+footer a { color: var(--blue); text-decoration: none; }
+footer a:hover { color: var(--accent); }
+
+@media (max-width: 720px) {
+  .hero .avatar { display: none; }
+  .navbar nav a:not(.btn) { display: none; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <img src="icon.png" alt="" width="96" height="96">
-    <h1>Xiaomi Debloater</h1>
-    <p class="lead">Remove bloatware, ads and telemetry from Xiaomi, Redmi and POCO phones running MIUI or HyperOS. No root, fully reversible, for Windows, macOS and Linux.</p>
-    <div class="buttons">
-      <a class="btn primary" href="https://github.com/fadeltd/xiaomi-debloater/releases">Download</a>
-      <a class="btn" href="https://github.com/fadeltd/xiaomi-debloater">View on GitHub</a>
-    </div>
-  </header>
 
-  <section>
-    <h2>Why a Xiaomi-only debloater?</h2>
+<header class="navbar">
+  <a class="brand" href="#">
+    <img src="icon.png" alt="NoirXD">
+    <span>NOIR<em>XD</em></span>
+  </a>
+  <nav>
+    <a href="#caracteristicas">Características</a>
+    <a href="#empezar">Cómo empezar</a>
+    <a href="#faq">FAQ</a>
+    <a class="btn primary" style="padding: 8px 16px;" href="https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases">Descargar</a>
+  </nav>
+</header>
+
+<!-- Hero: same structure as the in-app home -->
+<section class="hero" style="border-top: none;">
+  <div class="marquee-bg" aria-hidden="true">
+    <div class="marquee-row"><div class="marquee-track left">
+      <div class="marquee-group"><span>DEBLOAT</span><span>HYPEROS</span><span>NOIRXD</span><span>XIAOMI</span></div>
+      <div class="marquee-group"><span>DEBLOAT</span><span>HYPEROS</span><span>NOIRXD</span><span>XIAOMI</span></div>
+    </div></div>
+    <div class="marquee-row"><div class="marquee-track right">
+      <div class="marquee-group"><span>MIUI</span><span>ADB</span><span>SIN ROOT</span><span>REVERSIBLE</span></div>
+      <div class="marquee-group"><span>MIUI</span><span>ADB</span><span>SIN ROOT</span><span>REVERSIBLE</span></div>
+    </div></div>
+    <div class="marquee-row"><div class="marquee-track left">
+      <div class="marquee-group"><span>ANUNCIOS</span><span>TELEMETRÍA</span><span>MIUI</span><span>HYPEROS</span></div>
+      <div class="marquee-group"><span>ANUNCIOS</span><span>TELEMETRÍA</span><span>MIUI</span><span>HYPEROS</span></div>
+    </div></div>
+    <div class="marquee-row"><div class="marquee-track right">
+      <div class="marquee-group"><span>ADB</span><span>DEBLOAT</span><span>NOIRXD</span><span>SIN ROOT</span></div>
+      <div class="marquee-group"><span>ADB</span><span>DEBLOAT</span><span>NOIRXD</span><span>SIN ROOT</span></div>
+    </div></div>
+  </div>
+
+  <div class="avatar" aria-hidden="true">
+    <img src="avatar.webp" alt="">
+  </div>
+
+  <div class="content">
+    <div class="lockup">
+      <img src="icon.png" alt="">
+      <h1>NOIR<em>XD</em></h1>
+    </div>
+    <span class="badge">Noir - Xiaomi Debloater</span>
+    <p class="lead">
+      Elimina el bloatware, los anuncios y la telemetría de tus teléfonos Xiaomi, Redmi y POCO
+      con MIUI y HyperOS. Funciona por ADB, sin root y sin desbloquear el bootloader: cada
+      paquete está clasificado por riesgo y todas las acciones se pueden deshacer.
+    </p>
+    <div class="buttons">
+      <a class="btn primary" href="https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases">Descargar</a>
+      <a class="btn" href="https://github.com/NOIR-DexPrkr/xiaomi-debloater">Ver en GitHub</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section id="caracteristicas">
+    <div class="section-head">
+      <h2>¿Por qué un debloater solo para Xiaomi?</h2>
+      <span class="meta">4 razones</span>
+    </div>
     <div class="grid">
-      <div class="card"><h3>640+ Xiaomi packages</h3><p>Every package gets a plain-English description and a safe / caution / danger rating, for MIUI 12–14 and HyperOS 1, 2 and 3.</p></div>
-      <div class="card"><h3>Updated for new releases</h3><p>The app downloads the latest package list, so new HyperOS bloat is recognised without reinstalling.</p></div>
-      <div class="card"><h3>Reversible</h3><p>Apps are removed for your user only. Restore any of them from the Removed tab.</p></div>
-      <div class="card"><h3>No root needed</h3><p>Everything runs over ADB with USB debugging. Your bootloader stays locked and OTA updates keep working.</p></div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg></div>
+        <h3>640+ paquetes de Xiaomi</h3>
+        <p>Cada paquete tiene una descripción clara y una calificación de riesgo: seguro, precaución o peligroso. Para MIUI 12–14 y HyperOS 1, 2 y 3.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg></div>
+        <h3>Actualizado con cada versión</h3>
+        <p>La app descarga la última lista de paquetes, así que el bloat nuevo de HyperOS se reconoce sin reinstalar nada.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></div>
+        <h3>Reversible</h3>
+        <p>Las apps se eliminan solo para tu usuario. Restaura cualquiera desde la pestaña Eliminadas.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Sin root</h3>
+        <p>Todo funciona por ADB con la depuración por USB. Tu bootloader sigue bloqueado y las actualizaciones OTA siguen funcionando.</p>
+      </div>
     </div>
   </section>
 
-  <section>
-    <h2>How to debloat MIUI or HyperOS</h2>
-    <ol>
-      <li>Install ADB: <code>brew install android-platform-tools</code> (macOS), <code>winget install Google.PlatformTools</code> (Windows) or <code>sudo apt install adb</code> (Linux).</li>
-      <li>On the phone, open Settings &gt; About phone and tap <em>MIUI version</em> or <em>OS version</em> 7 times.</li>
-      <li>Turn on Settings &gt; Additional settings &gt; Developer options &gt; <em>USB debugging</em>.</li>
-      <li>Connect by USB and tap <em>Allow</em> on the phone.</li>
-      <li>Open Xiaomi Debloater, start with the Bloatware tab, and remove packages marked <em>safe</em>.</li>
+  <section id="empezar">
+    <div class="section-head">
+      <h2>Cómo empezar</h2>
+      <span class="meta">5 pasos</span>
+    </div>
+    <ol class="steps">
+      <li><span class="step-num">01</span><p>Instala ADB: <code>brew install android-platform-tools</code> (macOS), <code>winget install Google.PlatformTools</code> (Windows) o <code>sudo apt install adb</code> (Linux).</p></li>
+      <li><span class="step-num">02</span><p>En el teléfono, ve a <strong>Ajustes &gt; Acerca del teléfono</strong> y toca <em>Versión de MIUI</em> o <em>Versión del OS</em> 7 veces.</p></li>
+      <li><span class="step-num">03</span><p>Activa <strong>Ajustes &gt; Ajustes adicionales &gt; Opciones de desarrollador &gt; Depuración por USB</strong>.</p></li>
+      <li><span class="step-num">04</span><p>Conecta el teléfono por USB y toca <em>Permitir</em> en el aviso de depuración.</p></li>
+      <li><span class="step-num">05</span><p>Abre <strong>NoirXD</strong>, empieza por la pestaña Bloatware y elimina los paquetes marcados como <em>seguros</em>.</p></li>
     </ol>
   </section>
 
-  <section>
-    <h2>FAQ</h2>
-    <details><summary>Is it safe to debloat a Xiaomi phone?</summary><p>Packages are removed for the current user only, so they can be restored. Packages marked danger can break calls, SIM, Settings or booting; leave them alone and back up first.</p></details>
-    <details><summary>Do I need root or an unlocked bootloader?</summary><p>No. Xiaomi Debloater works over ADB with USB debugging enabled.</p></details>
-    <details><summary>How do I restore a removed app?</summary><p>Use Restore in the app's Removed tab, or run <code>adb shell cmd package install-existing &lt;package&gt;</code>. A factory reset also restores everything.</p></details>
-    <details><summary>Does it work on HyperOS 3?</summary><p>Yes. The list includes HyperOS 3 packages from the Xiaomi 15 Ultra and is shared by most current Xiaomi, Redmi and POCO models. Missing a package? <a href="https://github.com/fadeltd/xiaomi-debloater/issues/new?template=package-report.yml">Report it</a>.</p></details>
-    <details><summary>How is this different from Universal Android Debloater?</summary><p><a href="https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation">UAD-ng</a> covers every brand. Xiaomi Debloater focuses on Xiaomi only, tracks packages per MIUI/HyperOS version, and includes a Xiaomi-specific guide.</p></details>
+  <section id="faq">
+    <div class="section-head">
+      <h2>Preguntas frecuentes</h2>
+      <span class="meta">5 preguntas</span>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>¿Es seguro debloatear un teléfono Xiaomi?</summary>
+        <p class="answer">Los paquetes se eliminan solo para el usuario actual, así que se pueden restaurar. Los paquetes marcados como peligrosos pueden romper llamadas, SIM, Ajustes o el arranque; no los toques y haz una copia de seguridad antes.</p>
+      </details>
+      <details>
+        <summary>¿Necesito root o un bootloader desbloqueado?</summary>
+        <p class="answer">No. NoirXD funciona por ADB con la depuración por USB activada.</p>
+      </details>
+      <details>
+        <summary>¿Cómo restauro una app eliminada?</summary>
+        <p class="answer">Usa <em>Restaurar</em> en la pestaña Eliminadas de la app, o ejecuta <code>adb shell cmd package install-existing &lt;paquete&gt;</code>. Un restablecimiento de fábrica también restaura todo.</p>
+      </details>
+      <details>
+        <summary>¿Funciona con HyperOS 3?</summary>
+        <p class="answer">Sí. La lista incluye los paquetes de HyperOS 3 del Xiaomi 15 Ultra, que comparten la mayoría de los modelos actuales de Xiaomi, Redmi y POCO. ¿Falta un paquete? <a href="https://github.com/NOIR-DexPrkr/xiaomi-debloater/issues/new">Repórtalo</a>.</p>
+      </details>
+      <details>
+        <summary>¿En qué se diferencia de Universal Android Debloater?</summary>
+        <p class="answer"><a href="https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation">UAD-ng</a> cubre todas las marcas. NoirXD se enfoca solo en Xiaomi, con la lista versionada por MIUI/HyperOS y una guía específica de Xiaomi.</p>
+      </details>
+    </div>
   </section>
 
   <footer>
-    Open source under GPL-3.0. Xiaomi, MIUI, HyperOS, Redmi and POCO are trademarks of Xiaomi Inc.; this project is not affiliated with Xiaomi.
+    Creado con ♥ por <strong>Dex Parker</strong>. Basado en el proyecto original
+    <a href="https://github.com/fadeltd/xiaomi-debloater">Xiaomi Debloater</a> de
+    <strong>Fadel Trivandi Dipantara</strong>, bajo licencia GPL-3.0.<br>
+    Xiaomi, MIUI, HyperOS, Redmi y POCO son marcas de Xiaomi Inc.; este proyecto no está afiliado a Xiaomi.
   </footer>
 </div>
+
 </body>
 </html>

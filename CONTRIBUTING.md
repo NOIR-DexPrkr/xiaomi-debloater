@@ -48,12 +48,12 @@ From macOS you can also build Windows with `wails build -platform windows/amd64`
 
 **You never pick a version number, and you never write a release date.**
 
-If your pull request changes the app or its packages, add an entry under `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md), using a [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) heading:
+If your pull request changes the app or its packages, add an entry under `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md), using a [Keep a Changelog](https://keepachangelog.com/es/1.1.0/) heading in Spanish:
 
 ```markdown
 ## [Unreleased]
 
-### Fixed
+### Corregido
 - The thing you fixed
 ```
 
@@ -61,10 +61,10 @@ CI fails a pull request that changes the app without a changelog entry. Changes 
 
 Merging to `main` then does the rest:
 
-1. **Release** (`.github/workflows/release.yml`) reads `[Unreleased]` and derives the semver bump from its headings: `### Breaking` → major, `### Added` → minor, anything else (`Fixed`, `Changed`, `Security`, `Removed`) → patch.
+1. **Release** (`.github/workflows/release.yml`) reads `[Unreleased]` and derives the semver bump from its headings: `### Ruptura` → major, `### Añadido` → minor, anything else (`Corregido`, `Cambiado`, `Seguridad`, `Eliminado`) → patch. The English equivalents (`Breaking`, `Added`, …) also work.
 2. It moves `[Unreleased]` into a dated `## [x.y.z]` section, sets `info.productVersion` in `wails.json`, adds the release to the AppStream metainfo, commits that to `main`, pushes the tag `vx.y.z` and opens a draft GitHub release with the notes.
 3. **Publish** (`.github/workflows/publish.yml`) builds the tag for Linux (amd64, arm64, as `.tar.gz`, `.deb` and `.rpm`), macOS (universal) and Windows (amd64, arm64), uploads the files with `SHA256SUMS.txt`, and makes the release public.
-4. Publish then updates each package manager whose secret is set. A channel without its secret is skipped.
+4. This fork ships the artifacts as GitHub Release assets only. The Homebrew/Scoop/winget/Snap/Chocolatey channels from upstream were removed.
 
 An empty `[Unreleased]` releases nothing, so merging and releasing stay separate decisions. To publish a tag again, run **Publish** from the Actions tab with that tag.
 
@@ -78,13 +78,10 @@ The bump logic lives in [`scripts/release`](scripts/release) and is unit-tested 
 
 ### Package manager setup
 
-The package manager templates live in [`packaging/`](packaging). [`packaging/render.sh`](packaging/render.sh) fills them from a release's `SHA256SUMS.txt`.
+The `.deb` and `.rpm` are built straight from [`packaging/nfpm.yaml`](packaging/nfpm.yaml)
+by the Publish workflow, so no package manager secrets are needed. Only one
+optional secret remains:
 
 | Secret | Channel | Setup |
 |---|---|---|
-| `HOMEBREW_TAP_DEPLOY_KEY` | Homebrew | Private half of an SSH deploy key with write access on `fadeltd/homebrew-tap` |
-| `SCOOP_BUCKET_DEPLOY_KEY` | Scoop | Private half of an SSH deploy key with write access on `fadeltd/scoop-bucket` |
-| `WINGET_TOKEN` | winget | Classic token with `public_repo`. Publish opens a pull request on `microsoft/winget-pkgs` from a fork owned by the token's user |
-| `SNAPCRAFT_STORE_CREDENTIALS` | Snap (`android-debloater`) | `snapcraft export-login --snaps=android-debloater --acls=package_access,package_push,package_update,package_release creds.txt` |
-| `CHOCO_API_KEY` | Chocolatey | Not set up yet. The templates and job are ready; the job runs once the key exists. Every version goes through moderation |
 | `RELEASE_TOKEN` (optional) | Release | Only needed if branch protection stops `github-actions[bot]` pushing the release commit to `main` |

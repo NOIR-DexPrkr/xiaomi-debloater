@@ -36,13 +36,20 @@ func TestParseUnreleasedMissing(t *testing.T) {
 
 func TestDetermineBump(t *testing.T) {
 	cases := map[string]Bump{
-		"### Fixed\n- a":                      BumpPatch,
-		"### Changed\n- a":                    BumpPatch,
-		"### Removed\n- a":                    BumpPatch,
-		"### Fixed\n- a\n\n### Added\n- b":    BumpMinor,
-		"### Added\n- a\n\n### Breaking\n- b": BumpMajor,
-		"### Breaking Changes\n- a":           BumpMajor,
-		"Nothing yet.":                        BumpNone,
+		"### Fixed\n- a":                         BumpPatch,
+		"### Changed\n- a":                       BumpPatch,
+		"### Removed\n- a":                       BumpPatch,
+		"### Corregido\n- a":                     BumpPatch,
+		"### Cambiado\n- a":                      BumpPatch,
+		"### Eliminado\n- a":                     BumpPatch,
+		"### Fixed\n- a\n\n### Added\n- b":       BumpMinor,
+		"### Added\n- a\n\n### Breaking\n- b":    BumpMajor,
+		"### Breaking Changes\n- a":              BumpMajor,
+		"### Corregido\n- a\n\n### Añadido\n- b": BumpMinor,
+		"### Añadido\n- a\n\n### Ruptura\n- b":   BumpMajor,
+		"### Cambios incompatibles\n- a":         BumpMajor,
+		"Nothing yet.":                           BumpNone,
+		"Nada aún.":                              BumpNone,
 	}
 	for body, want := range cases {
 		got := DetermineBump(ParseUnreleased("## [Unreleased]\n\n" + body + "\n"))
@@ -81,7 +88,7 @@ func TestApplyRelease(t *testing.T) {
 	if err != nil || rel == nil {
 		t.Fatalf("ApplyRelease: %v, %v", rel, err)
 	}
-	want := header + "## [Unreleased]\n\nNothing yet.\n\n## [1.1.0] — 2026-10-01\n\n### Added\n- Homebrew cask\n\n## [1.0.0] — 2026-09-27\n\n### Added\n- First release\n"
+	want := header + "## [Unreleased]\n\nNada aún.\n\n## [1.1.0] — 2026-10-01\n\n### Added\n- Homebrew cask\n\n## [1.0.0] — 2026-09-27\n\n### Added\n- First release\n"
 	if rel.Changelog != want {
 		t.Fatalf("changelog:\n%s\nwant:\n%s", rel.Changelog, want)
 	}

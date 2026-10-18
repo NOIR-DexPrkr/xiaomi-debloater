@@ -46,18 +46,18 @@ func findADB() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("adb not found; %s", adbInstallHint())
+	return "", fmt.Errorf("no se encontró adb; %s", adbInstallHint())
 }
 
 // adbInstallHint returns the usual way to install adb on the current OS
 func adbInstallHint() string {
 	switch runtime.GOOS {
 	case "darwin":
-		return "install via: brew install android-platform-tools"
+		return "instálalo con: brew install android-platform-tools"
 	case "windows":
-		return "install via: winget install Google.PlatformTools (or add platform-tools to PATH)"
+		return "instálalo con: winget install Google.PlatformTools (o agrega platform-tools al PATH)"
 	default:
-		return "install via your package manager, e.g.: sudo apt install adb"
+		return "instálalo con tu gestor de paquetes, por ejemplo: sudo apt install adb"
 	}
 }
 
@@ -75,9 +75,9 @@ func (a *App) run(args ...string) (string, error) {
 	if err := cmd.Run(); err != nil {
 		stderrStr := strings.TrimSpace(stderr.String())
 		if stderrStr != "" {
-			return "", fmt.Errorf("adb %v failed: %w (stderr: %s)", args, err, stderrStr)
+			return "", fmt.Errorf("adb %v falló: %w (stderr: %s)", args, err, stderrStr)
 		}
-		return "", fmt.Errorf("adb %v failed: %w", args, err)
+		return "", fmt.Errorf("adb %v falló: %w", args, err)
 	}
 
 	return strings.TrimSpace(stdout.String()), nil
