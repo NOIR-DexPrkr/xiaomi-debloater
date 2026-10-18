@@ -13,6 +13,10 @@ Los encabezados de sección deciden la versión del siguiente release:
 
 ## [Unreleased]
 
+Nada aún.
+
+## [1.2.0] — 2026-10-18
+
 ### Añadido
 - Vista de inicio con la marca NoirXD: un hero con el nombre de la app, un
   resumen de lo que hace y dos tarjetas de acceso rápido (Iniciar y Guía),
