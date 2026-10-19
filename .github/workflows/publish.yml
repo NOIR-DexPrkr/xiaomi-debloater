@@ -83,7 +83,9 @@ jobs:
 
   macos:
     name: Build macOS universal
-    runs-on: macos-latest
+    # macos-latest now points to the brand-new macos-26 image, which has been
+    # unavailable/flaky; pin to the latest stable arm64 image instead.
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v7
         with:
