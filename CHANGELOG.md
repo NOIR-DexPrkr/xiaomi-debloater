@@ -13,6 +13,10 @@ Los encabezados de sección deciden la versión del siguiente release:
 
 ## [Unreleased]
 
+Nada aún.
+
+## [1.3.0] — 2026-10-19
+
 ### Cambiado
 - Los archivos de los releases se publican ahora con nombres fijos, sin número
   de versión (`noirxd-windows-amd64.exe`, `noirxd-macos-universal.zip`,
