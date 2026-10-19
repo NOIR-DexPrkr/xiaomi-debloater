@@ -4,10 +4,11 @@ import AppIcon from './AppIcon'
 interface PackageRowProps {
   pkg: main.AppPackage
   isSelected: boolean
+  showRisk: boolean
   onToggleSelect: (name: string) => void
 }
 
-function PackageRow({ pkg, isSelected, onToggleSelect }: PackageRowProps) {
+function PackageRow({ pkg, isSelected, showRisk, onToggleSelect }: PackageRowProps) {
   const getRiskBadgeClass = () => {
     switch (pkg.risk) {
       case 'safe':
@@ -87,13 +88,15 @@ function PackageRow({ pkg, isSelected, onToggleSelect }: PackageRowProps) {
           {getCategoryLabel()}
         </span>
       </td>
-      <td className="px-4 py-2">
-        <span
-          className={`px-2 py-0.5 rounded border font-display font-bold text-[10px] uppercase tracking-[0.08em] whitespace-nowrap ${getRiskBadgeClass()}`}
-        >
-          {getRiskLabel()}
-        </span>
-      </td>
+      {showRisk && (
+        <td className="px-4 py-2">
+          <span
+            className={`px-2 py-0.5 rounded border font-display font-bold text-[10px] uppercase tracking-[0.08em] whitespace-nowrap ${getRiskBadgeClass()}`}
+          >
+            {getRiskLabel()}
+          </span>
+        </td>
+      )}
     </tr>
   )
 }

@@ -22,6 +22,13 @@ import Guide from './components/Guide'
 import Home from './components/Home'
 
 type AppView = 'home' | 'debloat' | 'guide' | 'settings'
+type PackageMode = 'disable' | 'uninstall'
+
+// The Debloater splits into two full-width tabs: freeze apps or uninstall them
+const MODE_TABS: { value: PackageMode; label: string; description: string }[] = [
+  { value: 'disable', label: 'Deshabilitar', description: 'Apps que se pueden congelar o reactivar' },
+  { value: 'uninstall', label: 'Desinstalar', description: 'Incluye apps del sistema' },
+]
 
 function App() {
   const [devices, setDevices] = useState<Device[]>([])
@@ -32,6 +39,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
+  const [packageMode, setPackageMode] = useState<PackageMode>('disable')
   const [view, setView] = useState<AppView>('home')
   const [isMac, setIsMac] = useState(false)
   // Operation log: hidden by default, auto-opens on the first action
@@ -168,6 +176,16 @@ function App() {
     }
   }, [selectedSerial, listRevision])
 
+  // A state filter (Deshabilitadas/Eliminadas) belongs to one mode only
+  useEffect(() => {
+    if (
+      (packageMode === 'disable' && activeCategory === 'Removed') ||
+      (packageMode === 'uninstall' && activeCategory === 'Disabled')
+    ) {
+      setActiveCategory('All')
+    }
+  }, [packageMode, activeCategory])
+
   const connectedCount = devices.filter((d) => d.state === 'device').length
 
   // The log opens itself the first time an action runs
@@ -223,11 +241,35 @@ function App() {
               />
             </div>
 
+            {/* Action mode tabs: full width, right below the device info */}
+            <div className="flex border-b border-noir-border bg-noir">
+              {MODE_TABS.map((tab, index) => (
+                <button
+                  key={tab.value}
+                  onClick={() => setPackageMode(tab.value)}
+                  aria-pressed={packageMode === tab.value}
+                  className={`flex-1 min-w-0 px-4 py-2.5 text-left border-t-2 transition-colors ${
+                    index > 0 ? 'border-l border-noir-border' : ''
+                  } ${
+                    packageMode === tab.value
+                      ? 'bg-noir-accent border-t-noir-cyan text-noir-cyan'
+                      : 'border-t-transparent text-noir-body hover:bg-noir-hover hover:text-noir-text'
+                  }`}
+                >
+                  <span className="block font-display font-bold text-xs uppercase tracking-[0.08em]">
+                    {tab.label}
+                  </span>
+                  <span className="block text-[11px] opacity-75 truncate">{tab.description}</span>
+                </button>
+              ))}
+            </div>
+
             {/* Filter Bar */}
             <div className="border-b border-noir-border p-3">
               <FilterBar
                 searchText={searchText}
                 activeCategory={activeCategory}
+                mode={packageMode}
                 onSearchChange={setSearchText}
                 onCategoryChange={setActiveCategory}
               />
@@ -240,6 +282,7 @@ function App() {
                 searchText={searchText}
                 activeCategory={activeCategory}
                 selectedSerial={selectedSerial}
+                mode={packageMode}
                 showDanger={showDanger}
                 onAddLog={addLog}
                 onRefresh={refreshPackages}

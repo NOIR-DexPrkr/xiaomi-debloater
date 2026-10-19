@@ -62,16 +62,17 @@ Lee la pestaña **Guía** de la app antes de eliminar nada marcado con `precauci
 
 ## Instalación
 
-Descarga la app para tu plataforma desde [Releases](../../releases), o
-[compílala tú mismo](CONTRIBUTING.md#building-the-app).
+Descarga directa del último release para tu plataforma; los enlaces siempre apuntan a la
+versión más reciente, o [compílala tú mismo](CONTRIBUTING.md#building-the-app).
 
 | Plataforma | Archivo |
 |---|---|
-| Windows | `noirxd-vX.Y.Z-windows-amd64.exe` (o `-arm64.exe`) |
-| macOS (universal) | `noirxd-vX.Y.Z-macos-universal.zip` |
-| Linux (tar.gz) | `noirxd-vX.Y.Z-linux-amd64.tar.gz` (o `-arm64.tar.gz`) |
-| Ubuntu, Debian, Mint | `.deb` desde [Releases](../../releases), luego `sudo apt install ./noirxd_*.deb` |
-| Fedora, openSUSE | `.rpm` desde [Releases](../../releases), luego `sudo dnf install ./noirxd-*.rpm` |
+| Windows x64 | [noirxd-windows-amd64.exe](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-windows-amd64.exe) |
+| Windows ARM64 | [noirxd-windows-arm64.exe](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-windows-arm64.exe) |
+| macOS (Intel y Apple Silicon) | [noirxd-macos-universal.zip](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-macos-universal.zip) |
+| Linux (tar.gz) | [x64](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-linux-amd64.tar.gz) o [ARM64](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-linux-arm64.tar.gz) |
+| Ubuntu, Debian, Mint | [.deb x64](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-linux-amd64.deb) o [.deb ARM64](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-linux-arm64.deb), luego `sudo apt install ./noirxd-linux-*.deb` |
+| Fedora, openSUSE | [.rpm x64](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-linux-amd64.rpm) o [.rpm ARM64](https://github.com/NOIR-DexPrkr/xiaomi-debloater/releases/latest/download/noirxd-linux-arm64.rpm), luego `sudo dnf install ./noirxd-linux-*.rpm` |
 
 **macOS:** la app todavía no está notarizada por Apple, así que macOS bloquea el primer
 arranque. Ejecuta `xattr -dr com.apple.quarantine "/Applications/NoirXD.app"`, o ábrela una vez

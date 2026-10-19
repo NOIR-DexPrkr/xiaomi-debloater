@@ -17,6 +17,7 @@ interface ConfirmDialogProps {
   onCancel: () => void
   onActionStart: () => void
   onAddLog: (pkgName: string, message: string, success: boolean) => void
+  onActionError: (pkgName: string, message: string) => void
 }
 
 const ACTION_LABELS: Record<ActionType, string> = {
@@ -43,6 +44,7 @@ function ConfirmDialog({
   onCancel,
   onActionStart,
   onAddLog,
+  onActionError,
 }: ConfirmDialogProps) {
   const handleConfirm = async () => {
     // The operation log opens itself as soon as the action starts
@@ -65,8 +67,11 @@ function ConfirmDialog({
             break
         }
         onAddLog(pkg, result.message, result.success)
+        if (!result.success) onActionError(pkg, result.message)
       } catch (err) {
-        onAddLog(pkg, `Error: ${err}`, false)
+        const message = `Error: ${err}`
+        onAddLog(pkg, message, false)
+        onActionError(pkg, message)
       }
     }
     onConfirm()

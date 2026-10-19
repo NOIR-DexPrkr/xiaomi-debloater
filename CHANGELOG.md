@@ -13,7 +13,26 @@ Los encabezados de sección deciden la versión del siguiente release:
 
 ## [Unreleased]
 
-Nada aún.
+### Cambiado
+- Los archivos de los releases se publican ahora con nombres fijos, sin número
+  de versión (`noirxd-windows-amd64.exe`, `noirxd-macos-universal.zip`,
+  `noirxd-linux-amd64.tar.gz`, `.deb` y `.rpm`, y sus variantes ARM64), así
+  los enlaces de descarga directa nunca se rompen con cada release.
+- La web del proyecto añade una sección Descargas, después de la guía de
+  inicio, con selector por plataforma (iconos de Windows, macOS y Linux):
+  al elegir una se muestra su información y sus variantes (x64, ARM64,
+  `.tar.gz`, `.deb` y `.rpm`) con descarga directa al último release, más un
+  enlace "Versiones" al historial de releases.
+
+### Añadido
+- Modos separados en pestañas de ancho completo (Deshabilitar y Desinstalar)
+  bajo la información del dispositivo: deshabilitar solo lista apps instaladas
+  que no son del sistema y desinstalar lista cualquier app; los errores de
+  operación ahora muestran avisos legibles en pantalla.
+  El filtro Deshabilitadas aparece solo en la pestaña Deshabilitar y el de
+  Eliminadas, solo en Desinstalar.
+- Las categorías de la lista son más compactas para dar más espacio a las
+  aplicaciones.
 
 ## [1.2.0] — 2026-10-18
 

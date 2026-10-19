@@ -54,7 +54,9 @@ jobs:
           set -euo pipefail
           export VERSION=${TAG#v}
           mkdir -p dist
-          tar -czf "dist/noirxd-${TAG}-linux-${ARCH}.tar.gz" -C build/bin noirxd
+          # Stable asset name (no version) so the
+          # /releases/latest/download/<asset> link never breaks.
+          tar -czf "dist/noirxd-linux-${ARCH}.tar.gz" -C build/bin noirxd
 
           # The release binary, not go install: nfpm needs a newer Go than the
           # go.mod toolchain setup-go pins.
@@ -68,6 +70,9 @@ jobs:
             tar -xzf "$nfpm_tar" nfpm)
           "$RUNNER_TEMP/nfpm" pkg -f packaging/nfpm.yaml -p deb -t dist/
           "$RUNNER_TEMP/nfpm" pkg -f packaging/nfpm.yaml -p rpm -t dist/
+          # Rename away from nfpm's versioned output to stable asset names.
+          mv dist/noirxd_${VERSION}_*.deb "dist/noirxd-linux-${ARCH}.deb"
+          mv dist/noirxd-${VERSION}*.rpm "dist/noirxd-linux-${ARCH}.rpm"
           ls -l dist
 
       - uses: actions/upload-artifact@v7
@@ -97,7 +102,7 @@ jobs:
         run: |
           mkdir -p dist
           ditto -c -k --keepParent --norsrc --noextattr --noqtn \
-            build/bin/noirxd.app "dist/noirxd-${TAG}-macos-universal.zip"
+            build/bin/noirxd.app "dist/noirxd-macos-universal.zip"
 
       - uses: actions/upload-artifact@v7
         with:
@@ -124,7 +129,7 @@ jobs:
           mkdir -p dist
           for arch in amd64 arm64; do
             wails build -platform "windows/${arch}" -trimpath -clean
-            mv build/bin/noirxd.exe "dist/noirxd-${TAG}-windows-${arch}.exe"
+            mv build/bin/noirxd.exe "dist/noirxd-windows-${arch}.exe"
           done
 
       - uses: actions/upload-artifact@v7
