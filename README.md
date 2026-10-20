@@ -15,9 +15,9 @@ versión del sistema sin necesidad de reinstalar la app.
 > identidad visual *Flat Noir*. Los releases se publican aquí y la lista de paquetes se
 > mantiene en este repositorio. Ver [Créditos](#créditos).
 
-<!-- Añade una captura de la pestaña Paquetes con un teléfono conectado en docs/screenshot.png:
-![NoirXD mostrando paquetes de HyperOS con sus niveles de riesgo](docs/screenshot.png)
--->
+![NoirXD mostrando su splashscreen](demo1.png)
+![NoirXD mostrando paquetes de HyperOS con sus niveles de riesgo](demo2.png)
+
 
 ## Características
 
